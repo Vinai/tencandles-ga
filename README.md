@@ -1,3 +1,22 @@
+## ☕ Support the Developer / Soutenir le développeur
+
+### 🇬🇧 English
+**Ten Candles – Game Assistant** is a free, community-made Foundry VTT system, developed and maintained with passion.
+If you enjoy using this system and would like to support my work on Foundry VTT projects, you can buy me a coffee!
+Your support is entirely optional, but always appreciated. Thank you!
+
+### 🇫🇷 Français
+**Ten Candles – Game Assistant** est un système Foundry VTT communautaire et gratuit, développé et maintenu avec passion.
+Si vous appréciez ce système et souhaitez soutenir mon travail sur mes différents projets Foundry VTT, vous pouvez m'offrir un café !
+Votre soutien est entièrement facultatif, mais toujours très apprécié. Merci !
+
+<p align="center">
+  <a href="https://ko-fi.com/evilbram">
+    <img src="https://storage.ko-fi.com/cdn/kofi5.png" alt="Support Evilbram on Ko-fi" height="45">
+  </a>
+</p>
+
+
 # Système de jeu - Ten Candles – Game Assistant
 
 ## Jouez à Ten Candles sur Foundry VTT sans laisser la technique prendre le pas sur la narration

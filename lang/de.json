@@ -367,5 +367,15 @@
   "ETC.Character.RollDiceCount": "{count} Würfel werfen",
   "ETC.Character.RollOneDie": "Würfel werfen",
   "ETC.Character.LastCandleRoll": "Immer weiterkämpfen…",
-  "ETC.Character.NoDiceAvailable": "Keine Würfel verfügbar"
+  "ETC.Character.NoDiceAvailable": "Keine Würfel verfügbar",
+  "ETC.About.SidebarEntry": "Über Ten Candles – Game Assistant",
+  "ETC.About.Title": "Über Ten Candles – Game Assistant",
+  "ETC.About.Version": "Version:",
+  "ETC.About.Developer": "Entwickelt von:",
+  "ETC.About.Description": "Inoffizielles Community-System für Ten Candles auf Foundry VTT. Unterstützt Charaktere, Konflikte, Kerzen, Würfelpools und Szenenwechsel.",
+  "ETC.About.GitHub": "GitHub-Repository",
+  "ETC.About.SupportTitle": "Entwicklung unterstützen",
+  "ETC.About.SupportText": "Dieses Projekt wird kostenlos entwickelt und geteilt. Wenn dir meine Arbeit für Foundry VTT gefällt, kannst du mich freiwillig mit einem Kaffee unterstützen. Vielen Dank!",
+  "ETC.About.Coffee": "Buy a Coffee",
+  "ETC.About.Disclaimer": "Unabhängiges, inoffizielles Projekt. Die Unterstützung gilt ausschließlich dieser Foundry-Umsetzung; es besteht keine Verbindung zu oder Billigung durch die Urheber von Ten Candles."
 }

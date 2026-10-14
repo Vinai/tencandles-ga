@@ -1,0 +1,22 @@
+<div class="etc-about-content">
+  <header class="etc-about-header">
+    <h2>{{systemName}}</h2>
+    {{#if systemVersion}}<p>{{localize "ETC.About.Version"}} {{systemVersion}}</p>{{/if}}
+    <p>{{localize "ETC.About.Developer"}} <strong>Evilbram</strong></p>
+  </header>
+  <p class="etc-about-description">{{localize "ETC.About.Description"}}</p>
+  {{#if repositoryUrl}}
+  <a class="etc-about-github" href="{{repositoryUrl}}" target="_blank" rel="noopener noreferrer">
+    <i class="fa-brands fa-github" aria-hidden="true"></i> {{localize "ETC.About.GitHub"}}
+    <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+  </a>
+  {{/if}}
+  <div class="etc-about-support">
+    <h3>{{localize "ETC.About.SupportTitle"}}</h3>
+    <p>{{localize "ETC.About.SupportText"}}</p>
+    <a class="etc-about-coffee" href="{{coffeeUrl}}" target="_blank" rel="noopener noreferrer">
+      <i class="fa-solid fa-mug-hot" aria-hidden="true"></i> {{localize "ETC.About.Coffee"}}
+    </a>
+  </div>
+  <p class="etc-about-disclaimer">{{localize "ETC.About.Disclaimer"}}</p>
+</div>

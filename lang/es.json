@@ -367,5 +367,15 @@
   "ETC.Character.RollDiceCount": "Tirar los {count} dados",
   "ETC.Character.RollOneDie": "Tirar el dado",
   "ETC.Character.LastCandleRoll": "Luchar una vez más...",
-  "ETC.Character.NoDiceAvailable": "No quedan dados"
+  "ETC.Character.NoDiceAvailable": "No quedan dados",
+  "ETC.About.SidebarEntry": "Acerca de Ten Candles – Game Assistant",
+  "ETC.About.Title": "Acerca de Ten Candles – Game Assistant",
+  "ETC.About.Version": "Versión:",
+  "ETC.About.Developer": "Desarrollado por:",
+  "ETC.About.Description": "Sistema comunitario no oficial para jugar a Ten Candles en Foundry VTT. Ayuda a gestionar personajes, conflictos, velas, reservas de dados y transiciones de escena.",
+  "ETC.About.GitHub": "Repositorio de GitHub",
+  "ETC.About.SupportTitle": "Apoyar el desarrollo",
+  "ETC.About.SupportText": "Este proyecto se desarrolla y comparte gratuitamente. Si aprecias mi trabajo para Foundry VTT y deseas apoyarlo, puedes invitarme a un café. El apoyo es totalmente opcional. ¡Gracias!",
+  "ETC.About.Coffee": "Buy a Coffee",
+  "ETC.About.Disclaimer": "Proyecto independiente y no oficial. El apoyo se destina únicamente a esta adaptación para Foundry, sin afiliación ni respaldo de los creadores de Ten Candles."
 }

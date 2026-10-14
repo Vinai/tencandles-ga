@@ -9,6 +9,7 @@ import {
 import { TenCandlesCharacterData } from "./data/character-data.js";
 import { TenCandlesCharacterSheet } from "./sheets/character-sheet.js";
 import { TenCandlesStateControl } from "./apps/game-state-control.js";
+import { mountAboutInSettings } from "./apps/about.js";
 
 import { registerSystemFonts } from "./fonts.js";
 
@@ -183,6 +184,8 @@ Hooks.once("init", () => {
     }
   );
 });
+
+Hooks.on("renderSettings", mountAboutInSettings);
 
 Hooks.on("preCreateActor", (actor, data) => {
   const actorType = data?.type ?? actor.type;

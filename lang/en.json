@@ -367,5 +367,15 @@
   "ETC.Character.RollDiceCount": "Roll {count} Dice",
   "ETC.Character.RollOneDie": "Roll the Die",
   "ETC.Character.LastCandleRoll": "Fight on, to the very end…",
-  "ETC.Character.NoDiceAvailable": "No Dice Available"
+  "ETC.Character.NoDiceAvailable": "No Dice Available",
+  "ETC.About.SidebarEntry": "About Ten Candles – Game Assistant",
+  "ETC.About.Title": "About Ten Candles – Game Assistant",
+  "ETC.About.Version": "Version:",
+  "ETC.About.Developer": "Developed by:",
+  "ETC.About.Description": "Unofficial community system for playing Ten Candles on Foundry VTT. Helps manage characters, conflicts, candles, dice pools, and scene transitions.",
+  "ETC.About.GitHub": "GitHub repository",
+  "ETC.About.SupportTitle": "Support development",
+  "ETC.About.SupportText": "This project is developed and shared for free. If you enjoy my Foundry VTT work and would like to support it, you can buy me a coffee. Supporting me is entirely optional. Thank you!",
+  "ETC.About.Coffee": "Buy a Coffee",
+  "ETC.About.Disclaimer": "Independent, unofficial project. Support is solely for this Foundry adaptation, with no affiliation or endorsement from the creators of Ten Candles."
 }

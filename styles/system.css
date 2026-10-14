@@ -3282,3 +3282,32 @@
  * Les sélecteurs retirés ci-dessus appartenaient aux anciennes versions
  * de la carte « Nouvelle partie » et de l’indicateur circulaire de Limite.
  */
+
+/* Optional system information — isolated from game panels and chat cards. */
+.etc-about-settings-entry { padding: 0.45rem 0.55rem; }
+.etc-about-settings-button { width: 100%; min-width: 0; height: auto; min-height: 2rem; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 0.45rem; padding: 0.4rem 0.6rem; white-space: normal; }
+/* Warm gold accent shared with the Ko-fi link. Scoped to the About controls. */
+.etc-about-settings-button, .etc-about-coffee {
+  color: var(--etc-accent, #c8a96b);
+  border: 1px solid var(--etc-accent, #c8a96b);
+}
+.etc-about-settings-button:hover, .etc-about-settings-button:focus-visible,
+.etc-about-coffee:hover, .etc-about-coffee:focus-visible {
+  color: var(--etc-accent, #c8a96b);
+  border-color: var(--etc-accent, #c8a96b);
+  background: rgba(200, 169, 107, 0.12);
+}
+.etc-about-settings-button > i { flex: 0 0 auto; }
+.etc-about-settings-label { min-width: 0; text-align: center; line-height: 1.25; overflow-wrap: break-word; }
+.etc-about .window-content { overflow-y: auto; }
+.etc-about-content { padding: 0.85rem 1rem 1rem; color: var(--color-text-primary, #eee); font-family: "courier-prime", serif; line-height: 1.45; }
+.etc-about-header { text-align: center; border-bottom: 1px solid rgba(180,180,180,.25); padding-bottom: .55rem; }
+.etc-about-header h2 { font-family: "special-elite", serif; font-size: 1.2rem; margin: .2rem 0 .4rem; }
+.etc-about-header p { margin: .15rem 0; font-size: .87rem; }
+.etc-about-description { margin: .8rem 0; }
+.etc-about-github { display: inline-flex; gap: .45rem; align-items: center; }
+.etc-about-support { margin-top: .85rem; padding: .85rem; border: 1px solid rgba(175,175,175,.3); border-radius: 7px; background: rgba(128,128,128,.07); }
+.etc-about-support h3 { font-size: 1.02rem; margin: 0 0 .45rem; }
+.etc-about-support p { margin: 0 0 .75rem; }
+.etc-about-coffee { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; padding: .4rem .7rem; border: 1px solid currentColor; border-radius: 5px; text-decoration: none; }
+.etc-about-disclaimer { opacity: .75; font-size: .76rem; margin: .85rem 0 0; }

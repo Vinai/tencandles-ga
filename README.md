@@ -17,6 +17,10 @@ Votre soutien est entièrement facultatif, mais toujours très apprécié. Merci
 </p>
 
 
+## Nouveauté — Version 1.0.1
+
+Un accès **À propos de Ten Candles – Game Assistant** est disponible dans l’onglet Paramètres de Foundry VTT. Il affiche la version du système, les crédits, le dépôt GitHub et un lien facultatif **Buy a Coffee** vers Ko-fi. Interface localisée dans les six langues existantes.
+
 # Système de jeu - Ten Candles – Game Assistant
 
 ## Jouez à Ten Candles sur Foundry VTT sans laisser la technique prendre le pas sur la narration

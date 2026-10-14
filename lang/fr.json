@@ -367,5 +367,15 @@
   "ETC.Character.RollDiceCount": "Lancer les {count} dés",
   "ETC.Character.RollOneDie": "Lancer le dé",
   "ETC.Character.LastCandleRoll": "Lutter encore et toujours...",
-  "ETC.Character.NoDiceAvailable": "Aucun dé disponible"
+  "ETC.Character.NoDiceAvailable": "Aucun dé disponible",
+  "ETC.About.SidebarEntry": "À propos de Ten Candles – Game Assistant",
+  "ETC.About.Title": "À propos de Ten Candles – Game Assistant",
+  "ETC.About.Version": "Version :",
+  "ETC.About.Developer": "Développé par :",
+  "ETC.About.Description": "Système communautaire non officiel pour jouer à Ten Candles sur Foundry VTT. Aide à gérer les personnages, les conflits, les bougies, les dés et les transitions de scène.",
+  "ETC.About.GitHub": "Dépôt GitHub",
+  "ETC.About.SupportTitle": "Soutenir le développement",
+  "ETC.About.SupportText": "Ce projet est développé et partagé gratuitement. Si vous appréciez mon travail sur Foundry VTT et souhaitez le soutenir, vous pouvez m’offrir un café. Ce soutien est entièrement facultatif. Merci !",
+  "ETC.About.Coffee": "Buy a Coffee",
+  "ETC.About.Disclaimer": "Projet indépendant et non officiel. Le soutien concerne uniquement le développement de cette adaptation Foundry, sans affiliation ni approbation des créateurs de Ten Candles."
 }

@@ -31,7 +31,7 @@ Dans *Ten Candles*, l’ambiance et la narration occupent toute la place. La der
 
 Le système accompagne la partie sans jouer à votre place. Les joueurs et le MJ restent maîtres de l’histoire ; l’outil se charge simplement de tout ce qui gagne à rester discret.
 
-**[CAPTURE GÉNÉRALE DU SYSTÈME]**
+![Ten Candles Game assistant](https://raw.githubusercontent.com/ctotone/JdR/refs/heads/main/.Images/foundry-tencandlesbanniere-fr.webp)
 
 ## La fiche de personnage, tout simplement
 
@@ -39,7 +39,7 @@ La fiche rassemble les éléments essentiels de votre personnage : son concept, 
 
 Elle reste volontairement simple. Son rôle est de servir de repère pendant la partie, sans prendre plus de place que le personnage lui-même.
 
-**[CAPTURE DE LA FICHE DE PERSONNAGE]**
+![Ten Candles Game assistant](https://raw.githubusercontent.com/ctotone/JdR/refs/heads/main/.Images/foundry_presenatation_fiche.webp)
 
 ## Résoudre les conflits sans casser la scène
 
@@ -53,7 +53,7 @@ Toute la table suit ainsi l’évolution du conflit en temps réel, sans multipl
 
 Lorsque l’issue entraîne l’extinction d’une bougie, la carte accompagne également cette étape et indique combien de bougies restent allumées. Le Bal des vérités peut alors commencer autour de la table.
 
-**[CAPTURE D’UN CONFLIT DANS LE CHAT]**
+![Ten Candles Game assistant](https://raw.githubusercontent.com/ctotone/JdR/refs/heads/main/.Images/foundry_presenatation_roll.webp)
 
 ## Une partie qui évolue, avec ou sans canevas
 
@@ -65,7 +65,7 @@ Pour celles et ceux qui souhaitent jouer entièrement dans Foundry, le système 
 
 Le MJ peut également utiliser son propre setup : vraies bougies, dés physiques, caméra, scène personnalisée ou composition vidéo. Dans ce cas, les cartes de chat s’enrichissent de quelques informations supplémentaires afin que toute la table puisse suivre l’état d’avancement de la partie.
 
-**[CAPTURE DU CANEVAS OFFICIEL]**
+![Ten Candles Game assistant](https://raw.githubusercontent.com/ctotone/JdR/refs/heads/main/.Images/foundry_presenatation_scene.webp)
 
 ## Une régie pensée pour le Maître du jeu
 
@@ -73,7 +73,7 @@ Le système intègre une régie spécialement conçue pour accompagner le MJ pen
 
 Simple et intuitive, la régie rassemble ce dont il a besoin au moment où il en a besoin. Le MJ peut ainsi garder son attention sur la table, le rythme de la partie et l’histoire qui est en train de s’écrire.
 
-**[CAPTURE DE LA RÉGIE DU MAÎTRE DU JEU]**
+![Ten Candles Game assistant](https://raw.githubusercontent.com/ctotone/JdR/refs/heads/main/.Images/foundry_presenatation_regie.webp)
 
 ## Jusqu’à la dernière bougie…
 

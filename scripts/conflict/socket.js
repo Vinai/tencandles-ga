@@ -40,6 +40,10 @@ import {
   handleResolveInstant
 } from "../instant/manager.js";
 
+import {
+  handleTransferHopeDie
+} from "../management/actor-resources.js";
+
 export async function requestPlayerRoll(
   actorUuid = null
 ) {
@@ -150,6 +154,13 @@ async function handleGMRequest(data) {
         requesterId,
         data.payload?.requestId ?? null,
         data.payload?.result ?? null
+      );
+
+    case "transfer-hope-die":
+      return handleTransferHopeDie(
+        requesterId,
+        data.payload?.fromActorUuid ?? null,
+        data.payload?.toActorUuid ?? null
       );
 
     default:

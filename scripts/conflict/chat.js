@@ -16,7 +16,8 @@ import {
 } from "../state/game-state.js";
 
 import {
-  analyzeResolution
+  analyzeResolution,
+  getHopeResults
 } from "./dice.js";
 
 const RESOLUTION_TEMPLATE_PATH =
@@ -271,10 +272,8 @@ export async function renderResolutionCard(
     !resolved
   );
 
-  const hasHope = Boolean(
-    resolution.momentUsed &&
-    resolution.momentResult !== null
-  );
+  const hopeResults = getHopeResults(resolution);
+  const hasHope = hopeResults.length > 0;
 
   const hasGMPool =
     resolution.redPoolSize > 0;
@@ -338,7 +337,7 @@ export async function renderResolutionCard(
       ),
       hopeDice: hasHope
         ? prepareDice(
-            [resolution.momentResult],
+            hopeResults,
             "hope"
           )
         : [],

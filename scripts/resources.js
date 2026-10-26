@@ -17,6 +17,7 @@ export function getActorResourceState(actor) {
     canUseVice: Boolean(system?.vice?.available),
     canUseVirtue: Boolean(system?.virtue?.available),
     canUseMoment: Boolean(system?.hopeDieAvailable),
+    hopeDice: Math.max(Number(system?.hopeDiceCount) || 0, 0),
     canUseLimit: Boolean(system?.brinkAvailable)
   };
 }

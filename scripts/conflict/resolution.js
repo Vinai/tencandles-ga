@@ -272,11 +272,12 @@ export async function handlePlayerRoll(
 
     const {
       blueResults,
+      hopeResults,
       hopeResult
     } = await rollPlayerD6Pool(
       bluePoolSize,
       {
-        includeHope: resources.canUseMoment,
+        hopeDice: resources.hopeDice,
         userId: requesterId,
         actorId: actor.id
       }
@@ -309,6 +310,7 @@ export async function handlePlayerRoll(
 
       momentUsed: hopeResult !== null,
       momentResult: hopeResult,
+      hopeResults: clone(hopeResults),
 
       redPoolSize,
       redResults: [],
@@ -347,6 +349,7 @@ export async function handlePlayerRoll(
               {
                 type: "hope-roll",
                 result: hopeResult,
+                results: clone(hopeResults),
                 timestamp: now
               }
             ]

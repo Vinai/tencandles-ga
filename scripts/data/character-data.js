@@ -18,6 +18,7 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     const {
       BooleanField,
+      NumberField,
       SchemaField,
       StringField
     } = foundry.data.fields;
@@ -101,6 +102,23 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
         )
       }),
 
+      // Dés d'Espoir transmis : un martyr peut donner son dé d'Espoir à un
+      // autre survivant, qui le lance en plus des siens.
+      hope: new SchemaField({
+        received: new NumberField({
+          required: true,
+          nullable: false,
+          integer: true,
+          min: 0,
+          initial: 0
+        }),
+        givenAway: new BooleanField({
+          required: true,
+          nullable: false,
+          initial: false
+        })
+      }),
+
       resourceOrder: new StringField({
         required: true,
         nullable: false,
@@ -130,8 +148,27 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
     return this.momentStatus !== INSTANT_STATUSES.IDLE;
   }
 
+  /**
+   * Le dé d'Espoir gagné par l'Instant de ce personnage, tant qu'il ne l'a
+   * pas transmis.
+   */
+  get ownHopeDie() {
+    return Boolean(
+      this.momentStatus === INSTANT_STATUSES.SUCCESS &&
+      !this.hope?.givenAway
+    );
+  }
+
+  /** Tous les dés d'Espoir lancés par ce personnage : le sien et ceux reçus. */
+  get hopeDiceCount() {
+    return (
+      (this.ownHopeDie ? 1 : 0) +
+      Math.max(Number(this.hope?.received) || 0, 0)
+    );
+  }
+
   get hopeDieAvailable() {
-    return this.momentStatus === INSTANT_STATUSES.SUCCESS;
+    return this.hopeDiceCount > 0;
   }
 
   /**

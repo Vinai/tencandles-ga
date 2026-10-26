@@ -319,6 +319,11 @@ Hooks.once("ready", async () => {
       requestAction("start-next-scene", payload),
     seizeNarration: (resolutionId) =>
       requestAction("seize-narration", { resolutionId }),
+    transferHopeDie: (fromActorUuid, toActorUuid) =>
+      requestAction("transfer-hope-die", {
+        fromActorUuid,
+        toActorUuid
+      }),
     createNewGame,
 
     canvas: {

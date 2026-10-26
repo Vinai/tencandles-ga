@@ -165,13 +165,16 @@ export async function rollD6Pool(
 }
 
 /**
- * Le dé d'Espoir est lancé dans la même animation que le pool joueur, mais
- * reste isolé dans les données afin de ne jamais être affecté par la Limite.
+ * Les dés d'Espoir sont lancés dans la même animation que le pool joueur,
+ * mais restent isolés dans les données afin de ne jamais être affectés par la
+ * Limite. Un personnage peut en lancer plusieurs : le sien et ceux qu'un
+ * martyr lui a transmis. `includeHope` reste accepté pour un seul dé.
  */
 export async function rollPlayerD6Pool(
   numberOfDice,
   {
     includeHope = false,
+    hopeDice = includeHope ? 1 : 0,
     userId = game.user.id,
     actorId = null
   } = {}
@@ -181,17 +184,23 @@ export async function rollPlayerD6Pool(
     0,
     TOTAL_CANDLES
   );
+  const hopeCount = clampInteger(
+    hopeDice,
+    0,
+    TOTAL_CANDLES
+  );
 
   if (count === 0) {
     return {
       blueResults: [],
+      hopeResults: [],
       hopeResult: null,
       serializedRoll: null
     };
   }
 
-  const formula = includeHope
-    ? `${count}d6 + 1d6`
+  const formula = hopeCount > 0
+    ? `${count}d6 + ${hopeCount}d6`
     : `${count}d6`;
 
   const roll = createD6Roll(formula, actorId);
@@ -199,19 +208,37 @@ export async function rollPlayerD6Pool(
   await roll.evaluate({ allowInteractive: false });
   await showRollIn3D(roll, userId);
 
+  const hopeResults = hopeCount > 0
+    ? getActiveDieResults(roll.dice[1])
+    : [];
+
   return {
     blueResults: getActiveDieResults(
       roll.dice[0]
     ),
-    hopeResult: includeHope
-      ? (
-          getActiveDieResults(
-            roll.dice[1]
-          )[0] ?? null
-        )
-      : null,
+    hopeResults,
+    hopeResult: hopeResults[0] ?? null,
     serializedRoll: serializeRoll(roll)
   };
+}
+
+/**
+ * Résultats des dés d'Espoir d'une résolution. Les résolutions antérieures
+ * n'enregistraient qu'un seul dé (`momentResult`).
+ */
+export function getHopeResults(resolution) {
+  if (
+    Array.isArray(resolution?.hopeResults) &&
+    resolution.hopeResults.length > 0
+  ) {
+    return resolution.hopeResults;
+  }
+
+  return resolution?.momentUsed &&
+    resolution?.momentResult !== null &&
+    resolution?.momentResult !== undefined
+    ? [resolution.momentResult]
+    : [];
 }
 
 export function countValue(results, value) {
@@ -236,17 +263,16 @@ export function analyzeResolution(resolution) {
     6
   );
 
-  const momentSuccess = Boolean(
-    resolution?.momentUsed &&
-    [5, 6].includes(resolution?.momentResult)
+  const hopeResults = getHopeResults(resolution);
+
+  const momentSuccess = hopeResults.some(
+    (result) => [5, 6].includes(result)
   );
 
-  const momentSixes = Boolean(
-    resolution?.momentUsed &&
-    resolution?.momentResult === 6
-  )
-    ? 1
-    : 0;
+  const momentSixes = countValue(
+    hopeResults,
+    6
+  );
 
   const playerSixes = blueSixes + momentSixes;
   const provisionalSuccess =
@@ -281,6 +307,7 @@ export function analyzePlayerRoll(results) {
     redResults: [],
     momentUsed: false,
     momentResult: null,
+    hopeResults: [],
     gmRollCompleted: false
   };
 

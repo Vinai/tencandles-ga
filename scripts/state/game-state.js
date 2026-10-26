@@ -199,6 +199,16 @@ function normalizeResolution(rawResolution) {
           6
         )
       : null;
+  // Plusieurs dés d'Espoir possibles ; les anciennes résolutions n'en
+  // gardaient qu'un, dans `momentResult`.
+  resolution.hopeResults = resolution.momentUsed
+    ? normalizeDiceResults(
+        Array.isArray(resolution.hopeResults) &&
+        resolution.hopeResults.length > 0
+          ? resolution.hopeResults
+          : [resolution.momentResult]
+      ).slice(0, TOTAL_CANDLES)
+    : [];
 
   resolution.redPoolSize = clampInteger(
     resolution.redPoolSize,
@@ -548,16 +558,20 @@ export function canSeizeNarration(
   const redSixes = (resolution.redResults ?? [])
     .filter((result) => Number(result) === 6)
     .length;
-  const momentSuccess = Boolean(
-    resolution.momentUsed &&
-    [5, 6].includes(Number(resolution.momentResult))
+  const hopeResults = (
+    Array.isArray(resolution.hopeResults) &&
+    resolution.hopeResults.length > 0
+      ? resolution.hopeResults
+      : resolution.momentUsed
+        ? [resolution.momentResult]
+        : []
+  ).map(Number);
+  const momentSuccess = hopeResults.some(
+    (result) => [5, 6].includes(result)
   );
-  const momentSixes = Boolean(
-    resolution.momentUsed &&
-    Number(resolution.momentResult) === 6
-  )
-    ? 1
-    : 0;
+  const momentSixes = hopeResults
+    .filter((result) => result === 6)
+    .length;
   const playerSixes = blueSixes + momentSixes;
   const playerSucceeded =
     blueSixes > 0 || momentSuccess;

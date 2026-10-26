@@ -414,8 +414,11 @@ export class TenCandlesCharacterSheet extends HandlebarsApplicationMixin(
 
     if (!confirmed) return false;
 
+    // Le dé d'Espoir de l'Instant revient avec lui ; ceux reçus d'un martyr
+    // restent au personnage.
     await this.actor.update({
-      "system.moment.status": INSTANT_STATUSES.IDLE
+      "system.moment.status": INSTANT_STATUSES.IDLE,
+      "system.hope.givenAway": false
     });
 
     return true;

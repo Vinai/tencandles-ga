@@ -34,7 +34,8 @@ export async function updateCharacterResourceStates(
   {
     viceAvailable,
     virtueAvailable,
-    momentStatus
+    momentStatus,
+    brinkConsumed = false
   }
 ) {
   if (!isActiveGM()) {
@@ -71,10 +72,13 @@ export async function updateCharacterResourceStates(
     await discardInstantRequestForActor(actor);
   }
 
+  // Une Limite consumée l'est avec l'Espoir : la corriger rend les deux.
   await actor.update({
     "system.vice.available": Boolean(viceAvailable),
     "system.virtue.available": Boolean(virtueAvailable),
-    "system.moment.status": normalizedMomentStatus
+    "system.moment.status": normalizedMomentStatus,
+    "system.brink.burned": Boolean(brinkConsumed),
+    "system.hopeLost": Boolean(brinkConsumed)
   });
 
   return actor;

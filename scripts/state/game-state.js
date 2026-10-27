@@ -268,6 +268,9 @@ function normalizeResolution(rawResolution) {
   resolution.characterDeparture = Boolean(
     resolution.characterDeparture
   );
+  resolution.brinkConsumed = Boolean(
+    resolution.brinkConsumed
+  );
 
   resolution.narrationSeized = Boolean(
     resolution.narrationSeized

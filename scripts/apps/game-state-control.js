@@ -155,6 +155,9 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
         momentStatus:
           selectedActor?.system?.momentStatus ??
           INSTANT_STATUSES.IDLE,
+        brinkConsumed: Boolean(
+          selectedActor?.system?.brink?.burned
+        ),
         momentOptions: [
           {
             value: INSTANT_STATUSES.IDLE,
@@ -392,7 +395,9 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
         momentStatus:
           this.element.querySelector(
             'select[name="momentStatus"]'
-          )?.value ?? INSTANT_STATUSES.IDLE
+          )?.value ?? INSTANT_STATUSES.IDLE,
+        brinkConsumed:
+          getBooleanValue("brinkConsumed")
       }
     );
 

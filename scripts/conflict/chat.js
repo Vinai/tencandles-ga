@@ -400,6 +400,9 @@ export async function renderResolutionCard(
       characterDeparture: Boolean(
         resolution.characterDeparture
       ),
+      brinkConsumed: Boolean(
+        resolution.brinkConsumed
+      ),
       canSeizeNarration:
         canSeizeNarration(state, resolution),
       narrationSeizeLabel,

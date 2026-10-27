@@ -843,12 +843,21 @@ export async function handleValidation(
       Number(resolution.litCandlesAtRoll) === 1
     );
 
+    // Livre de base : si la Limite a été embrassée et que le relancer échoue,
+    // le personnage est consumé : une bougie s'éteint (l'échec s'en charge),
+    // il perd ses dés d'Espoir et brûle sa Limite.
+    const brinkConsumed = Boolean(
+      !finalSuccess &&
+      resolution.rerolls?.limit
+    );
+
     resolution.status =
       RESOLUTION_STATUSES.RESOLVED;
     resolution.finalSuccess = finalSuccess;
     resolution.narrator = narrator;
     resolution.characterDeparture =
       characterDeparture;
+    resolution.brinkConsumed = brinkConsumed;
 
     // À la dernière bougie, l'échec fait quitter le personnage. L'unique dé
     // reste disponible pour les autres personnages encore présents.
@@ -866,6 +875,7 @@ export async function handleValidation(
         blueDiceLost:
           resolution.blueDiceLost,
         characterDeparture,
+        brinkConsumed,
         gmRollSkipped,
         timestamp: resolution.updatedAt
       }
@@ -890,6 +900,32 @@ export async function handleValidation(
     state.activeResolution = null;
 
     await saveCollectiveState(state);
+
+    if (brinkConsumed) {
+      try {
+        const actor = await getResolutionActor(
+          resolution
+        );
+
+        await actor?.update({
+          "system.brink.burned": true,
+          "system.hopeLost": true
+        });
+      } catch (error) {
+        console.error(
+          "tencandles-ga | Limite consumée non enregistrée.",
+          error
+        );
+
+        notifyRequester(
+          requesterId,
+          "warn",
+          game.i18n.localize(
+            "ETC.Notifications.BrinkConsumedFailed"
+          )
+        );
+      }
+    }
 
     try {
       await updateResolutionMessage(resolution);

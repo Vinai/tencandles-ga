@@ -205,6 +205,11 @@
           {{localize "ETC.Chat.BallBegins"}}
         </span>
       {{/if}}
+      {{#if brinkConsumed}}
+        <span class="ets-conflict-result__note">
+          {{localize "ETC.Chat.BrinkConsumed" name=resolution.actorName}}
+        </span>
+      {{/if}}
     </section>
   {{else if provisionalSuccess}}
     <section class="ets-conflict-result is-provisional-success">

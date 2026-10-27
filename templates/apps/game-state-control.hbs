@@ -239,6 +239,14 @@
                 </select>
               </label>
 
+              <label>
+                <span>{{localize "ETC.Character.Brink"}}</span>
+                <select name="brinkConsumed" {{#unless actorManagement.canEdit}}disabled{{/unless}}>
+                  <option value="false" {{#unless actorManagement.brinkConsumed}}selected{{/unless}}>{{localize "ETC.ActorManagement.Available"}}</option>
+                  <option value="true" {{#if actorManagement.brinkConsumed}}selected{{/if}}>{{localize "ETC.ActorManagement.Consumed"}}</option>
+                </select>
+              </label>
+
               <label class="etc-actor-management__instant">
                 <span>{{localize "ETC.Character.Moment"}}</span>
                 <select name="momentStatus" {{#unless actorManagement.canEdit}}disabled{{/unless}}>

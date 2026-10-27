@@ -182,9 +182,10 @@ export class TenCandlesCharacterSheet extends HandlebarsApplicationMixin(
         actionLabel: game.i18n.localize(
           instantRequest
             ? "ETC.Character.InstantPending"
-            : momentStatus === INSTANT_STATUSES.SUCCESS
+            : momentStatus === INSTANT_STATUSES.SUCCESS &&
+                !system.hopeLost
               ? "ETC.Character.HopeGained"
-              : momentStatus === INSTANT_STATUSES.FAILURE
+              : momentStatus !== INSTANT_STATUSES.IDLE
                 ? "ETC.Character.HopeLost"
                 : "ETC.Character.TriggerInstant"
         ),
@@ -228,7 +229,9 @@ export class TenCandlesCharacterSheet extends HandlebarsApplicationMixin(
         statusLabel: game.i18n.localize(
           system.brinkAvailable
             ? "ETC.Character.BrinkAvailable"
-            : "ETC.Character.BrinkLocked"
+            : system.brinkBurned
+              ? "ETC.Character.BrinkBurned"
+              : "ETC.Character.BrinkLocked"
         ),
         statusHelp: game.i18n.localize(
           "ETC.Character.BrinkHint"

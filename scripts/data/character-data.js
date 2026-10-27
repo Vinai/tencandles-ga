@@ -98,7 +98,21 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
           game.i18n.localize(
             "ETC.Character.BrinkPlaceholder"
           )
-        )
+        ),
+        // Un relancer de la Limite raté consume le personnage : la Limite
+        // brûle et ne peut plus être embrassée.
+        burned: new BooleanField({
+          required: true,
+          nullable: false,
+          initial: false
+        })
+      }),
+
+      // Perdu avec la Limite, le dé d'Espoir ne revient pas.
+      hopeLost: new BooleanField({
+        required: true,
+        nullable: false,
+        initial: false
       }),
 
       resourceOrder: new StringField({
@@ -131,18 +145,27 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
   }
 
   get hopeDieAvailable() {
-    return this.momentStatus === INSTANT_STATUSES.SUCCESS;
+    return Boolean(
+      this.momentStatus === INSTANT_STATUSES.SUCCESS &&
+      !this.hopeLost
+    );
+  }
+
+  get brinkBurned() {
+    return Boolean(this.brink?.burned);
   }
 
   /**
    * La Limite devient disponible lorsque Vice et Vertu sont brûlés et que
-   * l'Instant a été résolu, que son issue soit une réussite ou un échec.
+   * l'Instant a été résolu, que son issue soit une réussite ou un échec. Une
+   * Limite brûlée par un relancer raté ne l'est plus.
    */
   get brinkAvailable() {
     return Boolean(
       this.viceConsumed &&
       this.virtueConsumed &&
-      this.momentAttempted
+      this.momentAttempted &&
+      !this.brinkBurned
     );
   }
 

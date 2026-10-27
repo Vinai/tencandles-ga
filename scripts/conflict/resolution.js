@@ -829,9 +829,12 @@ export async function handleValidation(
       analysis.provisionalSuccess
     );
 
+    // En cas d'égalité, la narration revient au MJ, sauf s'il a renoncé à
+    // son jet : le joueur ne pourrait alors pas s'emparer de la narration.
     const narrator = finalSuccess
       ? (
-          analysis.redSixes >
+          !gmRollSkipped &&
+          analysis.redSixes >=
           analysis.playerSixes
             ? "gm"
             : "player"

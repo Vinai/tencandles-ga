@@ -562,9 +562,11 @@ export function canSeizeNarration(
   const playerSucceeded =
     blueSixes > 0 || momentSuccess;
 
+  // Le MJ l'emporte aussi en cas d'égalité : le joueur peut alors s'emparer
+  // de la narration.
   return Boolean(
     playerSucceeded &&
-    redSixes > playerSixes
+    redSixes >= playerSixes
   );
 }
 

@@ -1,5 +1,9 @@
 # Changelog — Ten Candles – Game Assistant
 
+## Non publié — Égalités de 6
+
+- Égalité de 6 : la narration revient au MJ, comme le prévoit le livre de base (« ties always break in favor of the GM ») ; le joueur peut alors s’emparer de la narration.
+
 ## 1.0.1 — À propos et soutien facultatif
 
 - Ajout d’une entrée « À propos de Ten Candles – Game Assistant » dans l’onglet Paramètres de Foundry VTT.

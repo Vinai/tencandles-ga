@@ -252,12 +252,13 @@ export function analyzeResolution(resolution) {
   const provisionalSuccess =
     blueSixes > 0 || momentSuccess;
 
+  // Livre de base : « ties always break in favor of the GM ».
   const provisionalNarrator = Boolean(
     resolution?.gmRollCompleted &&
     provisionalSuccess
   )
     ? (
-        redSixes > playerSixes
+        redSixes >= playerSixes
           ? "gm"
           : "player"
       )

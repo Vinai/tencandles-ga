@@ -111,6 +111,44 @@
           <p>{{presentation.description}}</p>
         </section>
 
+        <section class="etc-presentation-control">
+          <label>
+            <span>{{localize "ETC.SceneTheme.Label"}}</span>
+            <select name="canvasTheme" {{#unless canvasThemes.canEdit}}disabled{{/unless}}>
+              <option value="classic" {{#if canvasThemes.classicSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.Classic"}}</option>
+              <option value="futur" {{#if canvasThemes.futurSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.Futur"}}</option>
+              <option value="foret-enfant" {{#if canvasThemes.foretEnfantSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.ForetEnfant"}}</option>
+              <option value="lovecraft" {{#if canvasThemes.lovecraftSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.Lovecraft"}}</option>
+              <option value="magie" {{#if canvasThemes.magieSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.Magie"}}</option>
+              <option value="medieval" {{#if canvasThemes.medievalSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.Medieval"}}</option>
+              <option value="post-apo" {{#if canvasThemes.postApoSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.PostApo"}}</option>
+              <option value="western" {{#if canvasThemes.westernSelected}}selected{{/if}}>{{localize "ETC.SceneTheme.Western"}}</option>
+            </select>
+          </label>
+          <p>{{localize "ETC.SceneTheme.Description"}}</p>
+        </section>
+
+        <section class="etc-presentation-control">
+          <label>
+            <span>{{localize "ETC.Speed.Mode"}}</span>
+            <select name="gameplayMode" {{#unless gameplay.canEdit}}disabled{{/unless}}>
+              <option value="classic" {{#if gameplay.classicSelected}}selected{{/if}}>{{localize "ETC.Speed.Classic"}}</option>
+              <option value="speed" {{#if gameplay.speedSelected}}selected{{/if}}>{{localize "ETC.Speed.Speed"}}</option>
+            </select>
+          </label>
+          {{#if gameplay.speedSelected}}
+          <label>
+            <span>{{localize "ETC.Speed.LastCandle"}}</span>
+            <select name="speedLastCandle" {{#unless gameplay.canEdit}}disabled{{/unless}}>
+              {{#each gameplay.candleOptions}}
+              <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+              {{/each}}
+            </select>
+          </label>
+          {{/if}}
+          <p>{{localize "ETC.Speed.Description"}}</p>
+        </section>
+
         <div class="etc-state-readonly-field">
           <span>{{localize "ETC.Collective.Stage"}}</span>
           <strong>{{state.stageLabel}}</strong>

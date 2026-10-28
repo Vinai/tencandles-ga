@@ -118,7 +118,9 @@ async function repairIncoherentStageSafely(state = undefined) {
   }
 }
 
-function warnManagedCanvasElementDeleted(document) {
+function warnManagedCanvasElementDeleted(document, options = {}) {
+  // Suppression attendue lors d’un changement de thème sans tuiles de flammes.
+  if (options?.tencandlesThemeTransition === true) return;
   if (!isActiveGM()) return;
 
   const state = getCollectiveState();

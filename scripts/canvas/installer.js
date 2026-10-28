@@ -324,7 +324,8 @@ async function createOfficialCanvasInternal({
 } = {}) {
   const state = getCollectiveState();
   const sceneData = await prepareOfficialCanvasSceneData({
-    gameId: state.gameId
+    gameId: state.gameId,
+    theme: state.canvasTheme
   });
 
   const scene = await foundry.documents.Scene.create(
@@ -524,7 +525,8 @@ export async function repairOfficialCanvas({
     }
 
     const template = await prepareOfficialCanvasSceneData({
-      gameId: state.gameId
+      gameId: state.gameId,
+      theme: state.canvasTheme
     });
 
     await scene.update({
@@ -596,7 +598,32 @@ export async function repairOfficialCanvas({
       )
     );
 
+    // Les flammes sont facultatives : retirer uniquement les anciennes flammes
+    // indexées lorsque le modèle du thème ne les contient plus.
+    const desiredFlames = new Set((template.tiles ?? [])
+      .filter((tile) => tile.flags?.[SYSTEM_ID]?.role === "candle-flame")
+      .map((tile) => Number(tile.flags[SYSTEM_ID].index)));
+    const obsoleteFlames = [...scene.tiles]
+      .filter((tile) => getRoleIndex(tile).role === "candle-flame")
+      .filter((tile) => !desiredFlames.has(getRoleIndex(tile).index))
+      .map((tile) => tile.id);
+    if (obsoleteFlames.length) {
+      await scene.deleteEmbeddedDocuments("Tile", obsoleteFlames, {
+        render: canvas.scene?.id === scene.id,
+        tencandlesThemeTransition: true
+      });
+    }
+
     scene = game.scenes.get(scene.id) ?? scene;
+
+    // Foundry v14 : régénérer la miniature depuis le fond du niveau initial.
+    // Une erreur de vignette ne doit jamais annuler le changement de thème.
+    try {
+      const thumbnail = await scene.createThumbnail();
+      if (thumbnail?.thumb) await scene.update({thumb: thumbnail.thumb}, {render: false});
+    } catch (error) {
+      console.warn("tencandles-ga | Miniature de scène non régénérée", error);
+    }
 
     await associateSceneWithState(scene);
     await syncOfficialCanvas(

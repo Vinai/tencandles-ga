@@ -5,6 +5,7 @@
 
 import {
   GAME_STAGES,
+  GAMEPLAY_MODES,
   RESOLUTION_STATUSES,
   TOTAL_CANDLES
 } from "../constants.js";
@@ -39,6 +40,8 @@ import {
   refreshSuspendedInstantMessages,
   suspendInstantRequestsInState
 } from "../instant/manager.js";
+
+import { effectiveBlueResults, speedApplies } from "./speed.js";
 
 import {
   analyzeResolution,
@@ -270,6 +273,13 @@ export async function handlePlayerRoll(
     const resources = getActorResourceState(actor);
     const bluePoolSize = state.bluePoolRemaining;
 
+    const gameplayMode = state.gameplayMode === GAMEPLAY_MODES.SPEED
+      ? GAMEPLAY_MODES.SPEED : GAMEPLAY_MODES.CLASSIC;
+    const speedLastCandle = state.speedLastCandle;
+    const speedEnabled = speedApplies({
+      gameplayMode, speedLastCandle, litCandlesAtRoll: state.litCandles
+    });
+
     const {
       blueResults,
       hopeResult
@@ -277,10 +287,13 @@ export async function handlePlayerRoll(
       bluePoolSize,
       {
         includeHope: resources.canUseMoment,
+        speedBlue: speedEnabled,
         userId: requesterId,
         actorId: actor.id
       }
     );
+
+    const effectiveResults = effectiveBlueResults(blueResults, speedEnabled);
 
     const redPoolSize =
       TOTAL_CANDLES - state.litCandles;
@@ -303,9 +316,11 @@ export async function handlePlayerRoll(
       actorName: actor.name,
 
       litCandlesAtRoll: state.litCandles,
+      gameplayMode,
+      speedLastCandle,
 
       bluePoolSize,
-      blueResults,
+      blueResults: effectiveResults,
 
       momentUsed: hopeResult !== null,
       momentResult: hopeResult,
@@ -339,7 +354,8 @@ export async function handlePlayerRoll(
       history: [
         {
           type: "player-roll",
-          results: clone(blueResults),
+          results: clone(effectiveResults),
+          rawResults: clone(blueResults),
           timestamp: now
         },
         ...(hopeResult !== null
@@ -615,11 +631,16 @@ export async function handleViceOrVirtue(
     } = await rollD6Pool(
       oneCount,
       {
+        speedBlue: speedApplies(resolution),
         userId: resolution.playerId,
         actorId: resolution.actorId
       }
     );
 
+    const speedEnabled = speedApplies(resolution);
+    const effectiveReplacements = effectiveBlueResults(
+      replacements, speedEnabled
+    );
     let replacementIndex = 0;
 
     resolution.blueResults =
@@ -627,7 +648,7 @@ export async function handleViceOrVirtue(
         if (result !== 1) return result;
 
         const replacement =
-          replacements[replacementIndex];
+          effectiveReplacements[replacementIndex];
 
         replacementIndex += 1;
         return replacement;
@@ -647,7 +668,8 @@ export async function handleViceOrVirtue(
       ...(resolution.history ?? []),
       {
         type: resource,
-        results: clone(replacements),
+        results: clone(effectiveReplacements),
+        rawResults: clone(replacements),
         timestamp: Date.now()
       }
     ];
@@ -733,19 +755,25 @@ export async function handleLimit(
     } = await rollD6Pool(
       resolution.bluePoolSize,
       {
+        speedBlue: speedApplies(resolution),
         userId: resolution.playerId,
         actorId: resolution.actorId
       }
     );
 
-    resolution.blueResults = results;
+    const speedEnabled = speedApplies(resolution);
+    const effectiveResults = effectiveBlueResults(
+      results, speedEnabled
+    );
+    resolution.blueResults = effectiveResults;
     resolution.rerolls.limit = true;
 
     resolution.history = [
       ...(resolution.history ?? []),
       {
         type: "limit",
-        results: clone(results),
+        results: clone(effectiveResults),
+        rawResults: clone(results),
         timestamp: Date.now()
       }
     ];

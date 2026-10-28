@@ -11,7 +11,10 @@ import {
   COLLECTIVE_STATE_KEY,
   COLLECTIVE_STATE_SCHEMA_VERSION,
   DEFAULT_CANVAS_TEMPLATE_ID,
+  CANVAS_THEMES,
   GAME_STAGES,
+  GAMEPLAY_MODES,
+  DEFAULT_SPEED_LAST_CANDLE,
   INSTANT_REQUEST_STATUSES,
   PRESENTATION_MODES,
   RESOLUTION_STATUSES,
@@ -184,6 +187,11 @@ function normalizeResolution(rawResolution) {
     0,
     TOTAL_CANDLES
   );
+  resolution.gameplayMode = resolution.gameplayMode === GAMEPLAY_MODES.SPEED
+    ? GAMEPLAY_MODES.SPEED : GAMEPLAY_MODES.CLASSIC;
+  resolution.speedLastCandle = clampInteger(
+    resolution.speedLastCandle ?? DEFAULT_SPEED_LAST_CANDLE, 1, TOTAL_CANDLES
+  );
   resolution.blueResults = normalizeDiceResults(
     resolution.blueResults
   ).slice(0, resolution.bluePoolSize);
@@ -332,7 +340,10 @@ export function createDefaultCollectiveState() {
     // Références préparées pour les futures phases.
     activeSceneId: null,
     canvasTemplateId: DEFAULT_CANVAS_TEMPLATE_ID,
-    presentationMode: PRESENTATION_MODES.OFFICIAL
+    canvasTheme: CANVAS_THEMES.CLASSIC,
+    presentationMode: PRESENTATION_MODES.OFFICIAL,
+    gameplayMode: GAMEPLAY_MODES.CLASSIC,
+    speedLastCandle: DEFAULT_SPEED_LAST_CANDLE
   };
 }
 
@@ -423,6 +434,15 @@ export function normalizeCollectiveState(rawState) {
   state.canvasTemplateId =
     normalizeNullableString(state.canvasTemplateId) ??
     DEFAULT_CANVAS_TEMPLATE_ID;
+
+  state.canvasTheme = Object.values(CANVAS_THEMES).includes(state.canvasTheme)
+    ? state.canvasTheme : CANVAS_THEMES.CLASSIC;
+
+  state.gameplayMode = state.gameplayMode === GAMEPLAY_MODES.SPEED
+    ? GAMEPLAY_MODES.SPEED : GAMEPLAY_MODES.CLASSIC;
+  state.speedLastCandle = clampInteger(
+    state.speedLastCandle ?? DEFAULT_SPEED_LAST_CANDLE, 1, TOTAL_CANDLES
+  );
 
   state.presentationMode = Object.values(PRESENTATION_MODES).includes(
     state.presentationMode
@@ -719,4 +739,30 @@ export async function setPresentationMode(presentationMode) {
   return updateCollectiveState({
     presentationMode
   });
+}
+
+/** Réglages de partie, réservés au MJ actif et verrouillés pendant le conflit. */
+export async function setGameplaySettings(gameplayMode, speedLastCandle) {
+  if (!isActiveGM()) {
+    throw new Error(game.i18n.localize("ETC.Notifications.ActiveGMOnly"));
+  }
+  const state = getCollectiveState();
+  if (state.activeResolution) {
+    throw new Error(game.i18n.localize("ETC.Speed.ConflictLocked"));
+  }
+  if (!Object.values(GAMEPLAY_MODES).includes(gameplayMode) ||
+      !Number.isInteger(Number(speedLastCandle)) ||
+      Number(speedLastCandle) < 1 || Number(speedLastCandle) > TOTAL_CANDLES) {
+    throw new Error(game.i18n.localize("ETC.Speed.InvalidSetting"));
+  }
+  return updateCollectiveState({ gameplayMode, speedLastCandle: Number(speedLastCandle) });
+}
+
+/** Choix de décor réservé au MJ, sans conflit en cours. */
+export async function setCanvasTheme(theme) {
+  if (!isActiveGM()) throw new Error(game.i18n.localize("ETC.Notifications.ActiveGMOnly"));
+  if (!Object.values(CANVAS_THEMES).includes(theme)) throw new Error("Invalid canvas theme");
+  const state = getCollectiveState();
+  if (state.activeResolution) throw new Error(game.i18n.localize("ETC.Speed.ConflictLocked"));
+  return updateCollectiveState({ canvasTheme: theme });
 }

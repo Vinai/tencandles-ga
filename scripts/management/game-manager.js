@@ -121,6 +121,9 @@ export async function createNewGame() {
     const nextState = {
       ...createInitialCollectiveState(),
       presentationMode: previousState.presentationMode,
+      gameplayMode: previousState.gameplayMode,
+      speedLastCandle: previousState.speedLastCandle,
+      canvasTheme: previousState.canvasTheme,
       canvasTemplateId:
         previousState.canvasTemplateId,
       activeSceneId: null

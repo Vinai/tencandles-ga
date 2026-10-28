@@ -11,6 +11,8 @@ import {
   clampInteger
 } from "../utils.js";
 
+import { effectiveBlueResults } from "./speed.js";
+
 function getActiveDieResults(die) {
   return (die?.results ?? [])
     .filter((result) => result.active !== false)
@@ -63,6 +65,31 @@ function deserializeRoll(serializedRoll) {
   throw new Error(
     game.i18n.localize("ETC.Errors.RollDeserialize")
   );
+}
+
+/**
+ * Creates an animation-only copy of an evaluated roll. The original roll,
+ * its serialized data, and Hope die remain physically accurate.
+ */
+function makeDisplayRoll(roll, speedBlue) {
+  if (!speedBlue) return roll;
+  const raw = getActiveDieResults(roll.dice[0]);
+  const effective = effectiveBlueResults(raw, true);
+  if (raw.every((value, i) => value === effective[i])) return roll;
+
+  const displayRoll = deserializeRoll(serializeRoll(roll));
+  const die = displayRoll.dice[0];
+  let index = 0;
+  for (const result of die.results) {
+    if (result.active === false) continue;
+    result.result = effective[index++];
+  }
+  // Keep the animation roll's cached total consistent with its visible faces.
+  if (typeof displayRoll._total === "number") {
+    displayRoll._total += effective.reduce((a, b) => a + b, 0) -
+      raw.reduce((a, b) => a + b, 0);
+  }
+  return displayRoll;
 }
 
 async function showRollIn3DLocal(roll, userId) {
@@ -137,7 +164,8 @@ export async function rollD6Pool(
   numberOfDice,
   {
     userId = game.user.id,
-    actorId = null
+    actorId = null,
+    speedBlue = false
   } = {}
 ) {
   const count = clampInteger(
@@ -156,7 +184,7 @@ export async function rollD6Pool(
   const roll = createD6Roll(`${count}d6`, actorId);
 
   await roll.evaluate({ allowInteractive: false });
-  await showRollIn3D(roll, userId);
+  await showRollIn3D(makeDisplayRoll(roll, speedBlue), userId);
 
   return {
     results: getActiveDieResults(roll.dice[0]),
@@ -173,7 +201,8 @@ export async function rollPlayerD6Pool(
   {
     includeHope = false,
     userId = game.user.id,
-    actorId = null
+    actorId = null,
+    speedBlue = false
   } = {}
 ) {
   const count = clampInteger(
@@ -197,7 +226,7 @@ export async function rollPlayerD6Pool(
   const roll = createD6Roll(formula, actorId);
 
   await roll.evaluate({ allowInteractive: false });
-  await showRollIn3D(roll, userId);
+  await showRollIn3D(makeDisplayRoll(roll, speedBlue), userId);
 
   return {
     blueResults: getActiveDieResults(

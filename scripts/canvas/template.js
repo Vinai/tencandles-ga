@@ -1,19 +1,24 @@
 import {
   DEFAULT_CANVAS_TEMPLATE_ID,
+  CANVAS_THEMES,
   SYSTEM_ID
 } from "../constants.js";
-
-import {
-  SCENE_TITLE_FONT_FAMILY
-} from "../fonts.js";
 
 export const OFFICIAL_CANVAS_TEMPLATE_VERSION = 3;
 export const OFFICIAL_CANVAS_FLAG = "official-canvas";
 
-const OFFICIAL_CANVAS_TEMPLATE_PATH =
-  `systems/${SYSTEM_ID}/assets/scene/official-scene.json`;
+const CANVAS_TEMPLATE_PATHS = Object.freeze({
+  [CANVAS_THEMES.CLASSIC]: `systems/${SYSTEM_ID}/assets/scene/official-scene.json`,
+  [CANVAS_THEMES.POST_APO]: `systems/${SYSTEM_ID}/assets/scene/post-apo-scene.json`,
+  [CANVAS_THEMES.FUTUR]: `systems/${SYSTEM_ID}/assets/scene/futur-scene.json`,
+  [CANVAS_THEMES.FORET_ENFANT]: `systems/${SYSTEM_ID}/assets/scene/foret-enfant-scene.json`,
+  [CANVAS_THEMES.MEDIEVAL]: `systems/${SYSTEM_ID}/assets/scene/medieval-scene.json`,
+  [CANVAS_THEMES.LOVECRAFT]: `systems/${SYSTEM_ID}/assets/scene/lovecraft-scene.json`,
+  [CANVAS_THEMES.MAGIE]: `systems/${SYSTEM_ID}/assets/scene/magie-scene.json`,
+  [CANVAS_THEMES.WESTERN]: `systems/${SYSTEM_ID}/assets/scene/western-scene.json`
+});
 
-let cachedTemplate = null;
+const cachedTemplates = new Map();
 
 function clone(value) {
   return foundry.utils.deepClone(value);
@@ -22,11 +27,12 @@ function clone(value) {
 /**
  * Charge le modèle JSON autonome du canevas officiel.
  */
-export async function loadOfficialCanvasTemplate() {
-  if (cachedTemplate) return clone(cachedTemplate);
+export async function loadOfficialCanvasTemplate(theme = CANVAS_THEMES.CLASSIC) {
+  if (!Object.hasOwn(CANVAS_TEMPLATE_PATHS, theme)) throw new Error("Invalid canvas theme");
+  if (cachedTemplates.has(theme)) return clone(cachedTemplates.get(theme));
 
   const response = await fetch(
-    OFFICIAL_CANVAS_TEMPLATE_PATH,
+    CANVAS_TEMPLATE_PATHS[theme],
     {
       cache: "no-store"
     }
@@ -43,17 +49,19 @@ export async function loadOfficialCanvasTemplate() {
     );
   }
 
-  cachedTemplate = await response.json();
-  return clone(cachedTemplate);
+  const data = await response.json();
+  cachedTemplates.set(theme, data);
+  return clone(data);
 }
 
 /**
  * Prépare le modèle avant sa création comme document Scene de monde.
  */
 export async function prepareOfficialCanvasSceneData({
-  gameId = null
+  gameId = null,
+  theme = CANVAS_THEMES.CLASSIC
 } = {}) {
-  const sceneData = await loadOfficialCanvasTemplate();
+  const sceneData = await loadOfficialCanvasTemplate(theme);
 
   delete sceneData._id;
   delete sceneData._stats;
@@ -77,19 +85,13 @@ export async function prepareOfficialCanvasSceneData({
     template: OFFICIAL_CANVAS_FLAG,
     templateId: DEFAULT_CANVAS_TEMPLATE_ID,
     templateVersion: OFFICIAL_CANVAS_TEMPLATE_VERSION,
+    themeId: theme,
     gameId
   };
 
   for (const drawing of sceneData.drawings ?? []) {
     drawing.author = game.user.id;
-
-    if (
-      drawing.flags?.[SYSTEM_ID]?.role ===
-      "scene-title"
-    ) {
-      drawing.fontFamily =
-        SCENE_TITLE_FONT_FAMILY;
-    }
+    // La police du titre appartient désormais au modèle visuel du thème.
   }
 
   return sceneData;

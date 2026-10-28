@@ -17,6 +17,14 @@ Votre soutien est entièrement facultatif, mais toujours très apprécié. Merci
 </p>
 
 
+## Nouveautés — Version 1.1.0 / What's New — Version 1.1.0
+
+**FR :** Le canevas officiel propose désormais huit thèmes : **Classique, Forêt enfant, Futuriste, Lovecraft, Magie, Médiéval, Post-apocalyptique et Western**. Les manuels du MJ et du Joueur sont disponibles **en français et en anglais** dans le compendium. Le **mode Accéléré**, facultatif, facilite les parties courtes : sur les jets concernés, chaque paire de 2 obtenue sur les dés joueurs devient 1 et 2, accélérant la perte des dés. Le MJ définit la dernière bougie concernée (6e par défaut).
+
+**EN:** The official canvas now offers eight themes: **Classic, Children's Forest, Futuristic, Lovecraft, Magic, Medieval, Post-Apocalyptic, and Western**. The **GM and Player manuals** are available **in French and English** in the compendium. The optional **Accelerated Mode** supports shorter sessions: on applicable rolls, each pair of player dice showing 2 becomes 1 and 2, speeding up dice attrition. The GM sets the last candle affected (sixth by default).
+
+See [CHANGELOG.md](CHANGELOG.md) for release details.
+
 ## Nouveauté — Version 1.0.1
 
 Un accès **À propos de Ten Candles – Game Assistant** est disponible dans l’onglet Paramètres de Foundry VTT. Il affiche la version du système, les crédits, le dépôt GitHub et un lien facultatif **Buy a Coffee** vers Ko-fi. Interface localisée dans les six langues existantes.

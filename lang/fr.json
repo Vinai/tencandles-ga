@@ -377,5 +377,22 @@
   "ETC.About.SupportTitle": "Soutenir le développement",
   "ETC.About.SupportText": "Ce projet est développé et partagé gratuitement. Si vous appréciez mon travail sur Foundry VTT et souhaitez le soutenir, vous pouvez m’offrir un café. Ce soutien est entièrement facultatif. Merci !",
   "ETC.About.Coffee": "Buy a Coffee",
-  "ETC.About.Disclaimer": "Projet indépendant et non officiel. Le soutien concerne uniquement le développement de cette adaptation Foundry, sans affiliation ni approbation des créateurs de Ten Candles."
+  "ETC.About.Disclaimer": "Projet indépendant et non officiel. Le soutien concerne uniquement le développement de cette adaptation Foundry, sans affiliation ni approbation des créateurs de Ten Candles.",
+  "ETC.Speed.Mode": "Mode de jeu",
+  "ETC.Speed.Classic": "Classique",
+  "ETC.Speed.Speed": "Accéléré",
+  "ETC.Speed.LastCandle": "Accéléré actif jusqu’à la bougie (incluse)",
+  "ETC.Speed.Description": "La conversion des paires de 2 en 1 et 2 ne concerne que les dés bleus.",
+  "ETC.Speed.ConflictLocked": "Impossible de modifier le mode pendant un conflit actif.",
+  "ETC.Speed.InvalidSetting": "Réglage Accéléré invalide.",
+  "ETC.SceneTheme.Label": "Thème de la scène",
+  "ETC.SceneTheme.Classic": "Classique",
+  "ETC.SceneTheme.PostApo": "Post-apocalyptique",
+  "ETC.SceneTheme.Description": "Change uniquement le décor et les positions des flammes et lumières.",
+  "ETC.SceneTheme.Futur": "Futuriste",
+  "ETC.SceneTheme.ForetEnfant": "Forêt enfant",
+  "ETC.SceneTheme.Medieval": "Médiéval",
+  "ETC.SceneTheme.Magie": "Magie",
+  "ETC.SceneTheme.Lovecraft": "Lovecraft",
+  "ETC.SceneTheme.Western": "Western"
 }

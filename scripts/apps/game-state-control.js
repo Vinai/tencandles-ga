@@ -1,5 +1,8 @@
 import {
   INSTANT_STATUSES,
+  GAMEPLAY_MODES,
+  TOTAL_CANDLES,
+  CANVAS_THEMES,
   PRESENTATION_MODES
 } from "../constants.js";
 
@@ -23,7 +26,9 @@ import {
   restoreBluePool,
   setBluePoolRemaining,
   setLitCandles,
-  setPresentationMode
+  setPresentationMode,
+  setGameplaySettings,
+  setCanvasTheme
 } from "../state/game-state.js";
 
 import {
@@ -110,6 +115,26 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
       ...context,
       state,
       canvas: getOfficialCanvasStatus(state),
+      canvasThemes: {
+        classicSelected: state.canvasTheme === CANVAS_THEMES.CLASSIC,
+        postApoSelected: state.canvasTheme === CANVAS_THEMES.POST_APO,
+        futurSelected: state.canvasTheme === CANVAS_THEMES.FUTUR,
+        foretEnfantSelected: state.canvasTheme === CANVAS_THEMES.FORET_ENFANT,
+        medievalSelected: state.canvasTheme === CANVAS_THEMES.MEDIEVAL,
+        magieSelected: state.canvasTheme === CANVAS_THEMES.MAGIE,
+        lovecraftSelected: state.canvasTheme === CANVAS_THEMES.LOVECRAFT,
+        westernSelected: state.canvasTheme === CANVAS_THEMES.WESTERN,
+        canEdit: state.canModify && !state.hasActiveResolution
+      },
+      gameplay: {
+        classicSelected: state.gameplayMode !== GAMEPLAY_MODES.SPEED,
+        speedSelected: state.gameplayMode === GAMEPLAY_MODES.SPEED,
+        canEdit: state.canModify && !state.hasActiveResolution,
+        candleOptions: Array.from({length: TOTAL_CANDLES}, (_, index) => {
+          const number = TOTAL_CANDLES - index;
+          return {value: number, label: number, selected: state.speedLastCandle === number};
+        })
+      },
       presentation: {
         description: game.i18n.localize(
           state.presentationMode === PRESENTATION_MODES.PERSONAL
@@ -231,6 +256,16 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
       (event) => {
         void this.#onPresentationModeChange(event);
       }
+    );
+
+    for (const input of this.element.querySelectorAll(
+      'select[name="gameplayMode"], select[name="speedLastCandle"]'
+    )) {
+      input.addEventListener("change", () => { void this.#onGameplayChange(); });
+    }
+
+    this.element.querySelector('select[name="canvasTheme"]')?.addEventListener(
+      "change", (event) => { void this.#onCanvasThemeChange(event); }
     );
 
     const actorSelect = this.element.querySelector(
@@ -467,6 +502,42 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
     });
 
     return result === true;
+  }
+
+  async #onCanvasThemeChange(event) {
+    const previousTheme = getCollectiveStateView().canvasTheme;
+    try {
+      await setCanvasTheme(event.currentTarget.value);
+      // Réutilise la réparation officielle : rôles et index restent identiques.
+      // Le sync final restaure les états des bougies et des dés de la partie.
+      const state = getCollectiveStateView();
+      if (state.activeSceneId && state.presentationMode === PRESENTATION_MODES.OFFICIAL) {
+        await repairOfficialCanvas({ activate: false, notify: false });
+      }
+      this.render();
+    } catch (error) {
+      console.error("tencandles-ga | Changement de thème impossible", error);
+      try { await setCanvasTheme(previousTheme); } catch (rollbackError) {
+        console.error("tencandles-ga | Restauration du thème impossible", rollbackError);
+      }
+      ui.notifications.error(error.message);
+      this.render();
+    }
+  }
+
+  async #onGameplayChange() {
+    const mode = this.element.querySelector('select[name="gameplayMode"]')?.value;
+    // Le seuil est masqué en mode Classique : réutiliser celui de l’état collectif.
+    const threshold = this.element.querySelector('select[name="speedLastCandle"]')?.value
+      ?? getCollectiveStateView().speedLastCandle;
+    try {
+      await setGameplaySettings(mode, threshold);
+      this.render();
+    } catch (error) {
+      console.error("tencandles-ga | Réglage Speed impossible", error);
+      ui.notifications.error(error.message);
+      this.render();
+    }
   }
 
   async #onPresentationModeChange(event) {

@@ -394,5 +394,17 @@
   "ETC.SceneTheme.Medieval": "Médiéval",
   "ETC.SceneTheme.Magie": "Magie",
   "ETC.SceneTheme.Lovecraft": "Lovecraft",
-  "ETC.SceneTheme.Western": "Western"
+  "ETC.SceneTheme.Western": "Western",
+  "ETC.Hope.Transferred": "{from} transmet son dé d’Espoir à {to}.",
+  "ETC.Hope.NoneToGive": "{name} n’a aucun dé d’Espoir à transmettre.",
+  "ETC.Hope.InvalidRecipient": "Sélectionne deux personnages différents.",
+  "ETC.Hope.TransferTitle": "Transférer un dé d’Espoir",
+  "ETC.Hope.TransferConfirm": "Confirmer le transfert du dé d’Espoir de {from} vers {to} ?",
+  "ETC.Hope.SelectRecipient": "Choisir le bénéficiaire",
+  "ETC.Hope.TransferButton": "Transférer",
+  "ETC.Chat.BrinkConsumed": "{name} est consumé par sa Limite : la Limite brûle et ses dés d’Espoir sont perdus.",
+  "ETC.Notifications.BrinkConsumedFailed": "Impossible d’enregistrer la Limite brûlée. Corrige les ressources dans la régie MJ.",
+  "ETC.Character.BrinkBurned": "Limite brûlée",
+  "ETC.Hope.BrinkConfirmTitle": "Confirmer l’utilisation de la Limite",
+  "ETC.Hope.BrinkConfirmBody": "Si la relance échoue, la Limite sera consumée et tous les dés d’Espoir actuels seront perdus. Confirmer ?"
 }

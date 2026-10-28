@@ -394,5 +394,17 @@
   "ETC.SceneTheme.Medieval": "Medievale",
   "ETC.SceneTheme.Magie": "Magia",
   "ETC.SceneTheme.Lovecraft": "Lovecraft",
-  "ETC.SceneTheme.Western": "Western"
+  "ETC.SceneTheme.Western": "Western",
+  "ETC.Hope.Transferred": "{from} trasferisce un dado Speranza a {to}.",
+  "ETC.Hope.NoneToGive": "{name} non ha dadi Speranza da trasferire.",
+  "ETC.Hope.InvalidRecipient": "Scegli due personaggi diversi.",
+  "ETC.Hope.TransferTitle": "Trasferisci dado Speranza",
+  "ETC.Hope.TransferConfirm": "Trasferire un dado Speranza da {from} a {to}?",
+  "ETC.Hope.SelectRecipient": "Scegli destinatario",
+  "ETC.Hope.TransferButton": "Trasferisci",
+  "ETC.Chat.BrinkConsumed": "{name} è consumato dal suo Limite: il Limite brucia e perde i dadi Speranza.",
+  "ETC.Notifications.BrinkConsumedFailed": "Impossibile salvare il Limite consumato. Correggere nella regia GM.",
+  "ETC.Character.BrinkBurned": "Limite bruciato",
+  "ETC.Hope.BrinkConfirmTitle": "Conferma ritentativo del Limite",
+  "ETC.Hope.BrinkConfirmBody": "Se il ritentativo fallisce, il Limite sarà consumato e tutti gli attuali dadi Speranza andranno persi. Continuare?"
 }

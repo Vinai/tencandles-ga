@@ -394,5 +394,17 @@
   "ETC.SceneTheme.Medieval": "Medieval",
   "ETC.SceneTheme.Magie": "Magia",
   "ETC.SceneTheme.Lovecraft": "Lovecraft",
-  "ETC.SceneTheme.Western": "Oeste"
+  "ETC.SceneTheme.Western": "Oeste",
+  "ETC.Hope.Transferred": "{from} transfiere un dado de Esperanza a {to}.",
+  "ETC.Hope.NoneToGive": "{name} no tiene dados de Esperanza para transferir.",
+  "ETC.Hope.InvalidRecipient": "Elige dos personajes distintos.",
+  "ETC.Hope.TransferTitle": "Transferir dado de Esperanza",
+  "ETC.Hope.TransferConfirm": "¿Transferir un dado de Esperanza de {from} a {to}?",
+  "ETC.Hope.SelectRecipient": "Elegir destinatario",
+  "ETC.Hope.TransferButton": "Transferir",
+  "ETC.Chat.BrinkConsumed": "{name} es consumido por su Límite: el Límite arde y pierde sus dados de Esperanza.",
+  "ETC.Notifications.BrinkConsumedFailed": "No se pudo guardar el Límite consumido. Corrígelo en el control del DJ.",
+  "ETC.Character.BrinkBurned": "Límite quemado",
+  "ETC.Hope.BrinkConfirmTitle": "Confirmar repetición del Límite",
+  "ETC.Hope.BrinkConfirmBody": "Si falla la repetición, se consumirá el Límite y se perderán todos los dados de Esperanza actuales. ¿Continuar?"
 }

@@ -277,6 +277,13 @@
                 </select>
               </label>
 
+              <label>
+                <span>{{localize "ETC.Character.Brink"}}</span>
+                <select name="brinkConsumed" {{#unless actorManagement.canEdit}}disabled{{/unless}}>
+                  <option value="false" {{#unless actorManagement.brinkConsumed}}selected{{/unless}}>{{localize "ETC.ActorManagement.Available"}}</option>
+                  <option value="true" {{#if actorManagement.brinkConsumed}}selected{{/if}}>{{localize "ETC.ActorManagement.Consumed"}}</option>
+                </select>
+              </label>
               <label class="etc-actor-management__instant">
                 <span>{{localize "ETC.Character.Moment"}}</span>
                 <select name="momentStatus" {{#unless actorManagement.canEdit}}disabled{{/unless}}>
@@ -296,6 +303,15 @@
               <i class="fa-solid fa-floppy-disk"></i>
               {{localize "ETC.ActorManagement.Save"}}
             </button>
+            <div class="etc-actor-management__grid">
+              <label><span>{{localize "ETC.Hope.TransferTitle"}} ({{actorManagement.hopeDiceCount}})</span>
+                <select name="hopeRecipientId" {{#unless actorManagement.canEdit}}disabled{{/unless}}>
+                  <option value="">{{localize "ETC.Hope.SelectRecipient"}}</option>
+                  {{#each actorManagement.transferRecipients}}<option value="{{id}}">{{name}}</option>{{/each}}
+                </select>
+              </label>
+              <button type="button" data-state-action="hope-transfer" {{#unless actorManagement.canEdit}}disabled{{/unless}} {{#unless actorManagement.hopeDiceCount}}disabled{{/unless}}>{{localize "ETC.Hope.TransferButton"}}</button>
+            </div>
           {{else}}
             <p class="etc-actor-management__empty">{{localize "ETC.ActorManagement.NoSelection"}}</p>
           {{/if}}

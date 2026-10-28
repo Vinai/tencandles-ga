@@ -394,5 +394,17 @@
   "ETC.SceneTheme.Medieval": "Mittelalter",
   "ETC.SceneTheme.Magie": "Magie",
   "ETC.SceneTheme.Lovecraft": "Lovecraft",
-  "ETC.SceneTheme.Western": "Western"
+  "ETC.SceneTheme.Western": "Western",
+  "ETC.Hope.Transferred": "{from} überträgt einen Hoffnungswürfel an {to}.",
+  "ETC.Hope.NoneToGive": "{name} hat keinen Hoffnungswürfel abzugeben.",
+  "ETC.Hope.InvalidRecipient": "Wähle zwei verschiedene Figuren.",
+  "ETC.Hope.TransferTitle": "Hoffnungswürfel übertragen",
+  "ETC.Hope.TransferConfirm": "Hoffnungswürfel von {from} an {to} übertragen?",
+  "ETC.Hope.SelectRecipient": "Empfänger auswählen",
+  "ETC.Hope.TransferButton": "Übertragen",
+  "ETC.Chat.BrinkConsumed": "{name} wird vom Abgrund verzehrt: Der Abgrund verbrennt, die Hoffnungswürfel gehen verloren.",
+  "ETC.Notifications.BrinkConsumedFailed": "Abgrund konnte nicht gespeichert werden. In der SL-Steuerung korrigieren.",
+  "ETC.Character.BrinkBurned": "Abgrund verbrannt",
+  "ETC.Hope.BrinkConfirmTitle": "Abgrund-Wiederholungswurf bestätigen",
+  "ETC.Hope.BrinkConfirmBody": "Wenn der Wiederholungswurf scheitert, verbrennt der Abgrund und alle aktuellen Hoffnungswürfel gehen verloren. Fortfahren?"
 }

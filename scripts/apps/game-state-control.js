@@ -37,7 +37,8 @@ import {
 
 import {
   getWorldCharacterActors,
-  updateCharacterResourceStates
+  updateCharacterResourceStates,
+  transferHopeDieGM
 } from "../management/actor-resources.js";
 
 import {
@@ -180,6 +181,9 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
         momentStatus:
           selectedActor?.system?.momentStatus ??
           INSTANT_STATUSES.IDLE,
+        brinkConsumed: Boolean(selectedActor?.system?.brink?.burned),
+        hopeDiceCount: selectedActor?.system?.hopeDiceCount ?? 0,
+        transferRecipients: characters.filter(actor => actor.id !== selectedActor?.id).map(actor => ({id:actor.id,name:actor.name})),
         momentOptions: [
           {
             value: INSTANT_STATUSES.IDLE,
@@ -364,6 +368,10 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
           );
           break;
 
+        case "hope-transfer":
+          await this.#transferHope();
+          break;
+
         case "actor-resources-save":
           await this.#saveActorResources();
           break;
@@ -409,6 +417,22 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
     }
   }
 
+  async #transferHope() {
+    const toId = this.element.querySelector('select[name="hopeRecipientId"]')?.value;
+    if (!this.selectedActorId || !toId) return false;
+    const giver = game.actors.get(this.selectedActorId);
+    const recipient = game.actors.get(toId);
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: {title: game.i18n.localize("ETC.Hope.TransferTitle")},
+      content: `<p>${game.i18n.format("ETC.Hope.TransferConfirm", {from: giver?.name ?? "?", to: recipient?.name ?? "?"})}</p>`
+    });
+    if (!confirmed) return false;
+    const {giver: from, receiver: to} = await transferHopeDieGM(this.selectedActorId, toId);
+    ui.notifications.info(game.i18n.format("ETC.Hope.Transferred", {from:from.name, to:to.name}));
+    this.render();
+    return true;
+  }
+
   async #saveActorResources() {
     if (!this.selectedActorId) return false;
 
@@ -427,7 +451,8 @@ export class TenCandlesStateControl extends HandlebarsApplicationMixin(
         momentStatus:
           this.element.querySelector(
             'select[name="momentStatus"]'
-          )?.value ?? INSTANT_STATUSES.IDLE
+          )?.value ?? INSTANT_STATUSES.IDLE,
+        brinkConsumed: getBooleanValue("brinkConsumed")
       }
     );
 

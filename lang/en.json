@@ -394,5 +394,17 @@
   "ETC.SceneTheme.Medieval": "Medieval",
   "ETC.SceneTheme.Magie": "Magic",
   "ETC.SceneTheme.Lovecraft": "Lovecraft",
-  "ETC.SceneTheme.Western": "Western"
+  "ETC.SceneTheme.Western": "Western",
+  "ETC.Hope.Transferred": "{from} transfers a Hope die to {to}.",
+  "ETC.Hope.NoneToGive": "{name} has no Hope die to transfer.",
+  "ETC.Hope.InvalidRecipient": "Select two different characters.",
+  "ETC.Hope.TransferTitle": "Transfer a Hope die",
+  "ETC.Hope.TransferConfirm": "Transfer a Hope die from {from} to {to}?",
+  "ETC.Hope.SelectRecipient": "Select recipient",
+  "ETC.Hope.TransferButton": "Transfer",
+  "ETC.Chat.BrinkConsumed": "{name} is consumed by their Brink: the Brink burns and their Hope dice are lost.",
+  "ETC.Notifications.BrinkConsumedFailed": "Could not save the consumed Brink. Correct the resources in GM control.",
+  "ETC.Character.BrinkBurned": "Brink burned",
+  "ETC.Hope.BrinkConfirmTitle": "Confirm Brink reroll",
+  "ETC.Hope.BrinkConfirmBody": "If the reroll fails, the Brink will be consumed and all current Hope dice will be lost. Continue?"
 }

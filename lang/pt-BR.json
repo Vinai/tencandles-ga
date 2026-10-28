@@ -394,5 +394,17 @@
   "ETC.SceneTheme.Medieval": "Medieval",
   "ETC.SceneTheme.Magie": "Magia",
   "ETC.SceneTheme.Lovecraft": "Lovecraft",
-  "ETC.SceneTheme.Western": "Faroeste"
+  "ETC.SceneTheme.Western": "Faroeste",
+  "ETC.Hope.Transferred": "{from} transfere um dado de Esperança para {to}.",
+  "ETC.Hope.NoneToGive": "{name} não tem dado de Esperança para transferir.",
+  "ETC.Hope.InvalidRecipient": "Escolha dois personagens diferentes.",
+  "ETC.Hope.TransferTitle": "Transferir dado de Esperança",
+  "ETC.Hope.TransferConfirm": "Transferir dado de Esperança de {from} para {to}?",
+  "ETC.Hope.SelectRecipient": "Escolher destinatário",
+  "ETC.Hope.TransferButton": "Transferir",
+  "ETC.Chat.BrinkConsumed": "{name} é consumido por seu Limite: o Limite queima e seus dados de Esperança são perdidos.",
+  "ETC.Notifications.BrinkConsumedFailed": "Não foi possível salvar o Limite consumido. Corrija no controle do mestre.",
+  "ETC.Character.BrinkBurned": "Limite queimado",
+  "ETC.Hope.BrinkConfirmTitle": "Confirmar nova rolagem do Limite",
+  "ETC.Hope.BrinkConfirmBody": "Se a nova rolagem falhar, o Limite será consumido e todos os dados atuais de Esperança serão perdidos. Continuar?"
 }

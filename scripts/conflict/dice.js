@@ -200,6 +200,7 @@ export async function rollPlayerD6Pool(
   numberOfDice,
   {
     includeHope = false,
+    hopeDice = includeHope ? 1 : 0,
     userId = game.user.id,
     actorId = null,
     speedBlue = false
@@ -211,16 +212,18 @@ export async function rollPlayerD6Pool(
     TOTAL_CANDLES
   );
 
+  const hopeCount = clampInteger(hopeDice, 0, TOTAL_CANDLES);
   if (count === 0) {
     return {
       blueResults: [],
+      hopeResults: [],
       hopeResult: null,
       serializedRoll: null
     };
   }
 
-  const formula = includeHope
-    ? `${count}d6 + 1d6`
+  const formula = hopeCount > 0
+    ? `${count}d6 + ${hopeCount}d6`
     : `${count}d6`;
 
   const roll = createD6Roll(formula, actorId);
@@ -228,19 +231,21 @@ export async function rollPlayerD6Pool(
   await roll.evaluate({ allowInteractive: false });
   await showRollIn3D(makeDisplayRoll(roll, speedBlue), userId);
 
+  const hopeResults = hopeCount > 0 ? getActiveDieResults(roll.dice[1]) : [];
   return {
-    blueResults: getActiveDieResults(
-      roll.dice[0]
-    ),
-    hopeResult: includeHope
-      ? (
-          getActiveDieResults(
-            roll.dice[1]
-          )[0] ?? null
-        )
-      : null,
+    blueResults: getActiveDieResults(roll.dice[0]),
+    hopeResults,
+    hopeResult: hopeResults[0] ?? null,
     serializedRoll: serializeRoll(roll)
   };
+}
+
+export function getHopeResults(resolution) {
+  if (Array.isArray(resolution?.hopeResults) && resolution.hopeResults.length > 0) {
+    return resolution.hopeResults;
+  }
+  return resolution?.momentUsed && resolution?.momentResult != null
+    ? [resolution.momentResult] : [];
 }
 
 export function countValue(results, value) {
@@ -265,17 +270,9 @@ export function analyzeResolution(resolution) {
     6
   );
 
-  const momentSuccess = Boolean(
-    resolution?.momentUsed &&
-    [5, 6].includes(resolution?.momentResult)
-  );
-
-  const momentSixes = Boolean(
-    resolution?.momentUsed &&
-    resolution?.momentResult === 6
-  )
-    ? 1
-    : 0;
+  const hopeResults = getHopeResults(resolution);
+  const momentSuccess = hopeResults.some(result => [5, 6].includes(Number(result)));
+  const momentSixes = countValue(hopeResults.map(Number), 6);
 
   const playerSixes = blueSixes + momentSixes;
   const provisionalSuccess =
@@ -286,7 +283,7 @@ export function analyzeResolution(resolution) {
     provisionalSuccess
   )
     ? (
-        redSixes > playerSixes
+        redSixes >= playerSixes
           ? "gm"
           : "player"
       )

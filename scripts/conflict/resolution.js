@@ -282,11 +282,12 @@ export async function handlePlayerRoll(
 
     const {
       blueResults,
+      hopeResults,
       hopeResult
     } = await rollPlayerD6Pool(
       bluePoolSize,
       {
-        includeHope: resources.canUseMoment,
+        hopeDice: resources.hopeDice,
         speedBlue: speedEnabled,
         userId: requesterId,
         actorId: actor.id
@@ -324,6 +325,7 @@ export async function handlePlayerRoll(
 
       momentUsed: hopeResult !== null,
       momentResult: hopeResult,
+      hopeResults: clone(hopeResults),
 
       redPoolSize,
       redResults: [],
@@ -363,6 +365,7 @@ export async function handlePlayerRoll(
               {
                 type: "hope-roll",
                 result: hopeResult,
+                results: clone(hopeResults),
                 timestamp: now
               }
             ]
@@ -859,7 +862,8 @@ export async function handleValidation(
 
     const narrator = finalSuccess
       ? (
-          analysis.redSixes >
+          !gmRollSkipped &&
+          analysis.redSixes >=
           analysis.playerSixes
             ? "gm"
             : "player"
@@ -877,6 +881,8 @@ export async function handleValidation(
     resolution.narrator = narrator;
     resolution.characterDeparture =
       characterDeparture;
+    const brinkConsumed = Boolean(!finalSuccess && resolution.rerolls?.limit);
+    resolution.brinkConsumed = brinkConsumed;
 
     // À la dernière bougie, l'échec fait quitter le personnage. L'unique dé
     // reste disponible pour les autres personnages encore présents.
@@ -894,6 +900,7 @@ export async function handleValidation(
         blueDiceLost:
           resolution.blueDiceLost,
         characterDeparture,
+        brinkConsumed,
         gmRollSkipped,
         timestamp: resolution.updatedAt
       }
@@ -917,7 +924,22 @@ export async function handleValidation(
     state.lastResolution = clone(resolution);
     state.activeResolution = null;
 
+    // Store character consequences after the collective resolution is committed.
     await saveCollectiveState(state);
+    if (brinkConsumed) {
+      try {
+        const actor = await getResolutionActor(resolution);
+        if (!actor) throw new Error("Actor missing for Brink consumption");
+        await actor.update({
+          "system.brink.burned": true,
+          "system.hopeLost": true,
+          "system.hope.received": 0
+        });
+      } catch (error) {
+        console.error("tencandles-ga | Brink consumption failed", error);
+        notifyRequester(requesterId, "warn", game.i18n.localize("ETC.Notifications.BrinkConsumedFailed"));
+      }
+    }
 
     try {
       await updateResolutionMessage(resolution);

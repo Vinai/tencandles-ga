@@ -18,6 +18,7 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     const {
       BooleanField,
+      NumberField,
       SchemaField,
       StringField
     } = foundry.data.fields;
@@ -98,7 +99,13 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
           game.i18n.localize(
             "ETC.Character.BrinkPlaceholder"
           )
-        )
+        ),
+        burned: new BooleanField({required: true, nullable: false, initial: false})
+      }),
+      hopeLost: new BooleanField({required: true, nullable: false, initial: false}),
+      hope: new SchemaField({
+        received: new NumberField({required: true, nullable: false, integer: true, min: 0, initial: 0}),
+        givenAway: new BooleanField({required: true, nullable: false, initial: false})
       }),
 
       resourceOrder: new StringField({
@@ -130,8 +137,20 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
     return this.momentStatus !== INSTANT_STATUSES.IDLE;
   }
 
+  get ownHopeDie() {
+    return this.momentStatus === INSTANT_STATUSES.SUCCESS && !this.hopeLost && !this.hope?.givenAway;
+  }
+
+  get hopeDiceCount() {
+    return (this.ownHopeDie ? 1 : 0) + Math.max(0, Number(this.hope?.received) || 0);
+  }
+
   get hopeDieAvailable() {
-    return this.momentStatus === INSTANT_STATUSES.SUCCESS;
+    return this.hopeDiceCount > 0;
+  }
+
+  get brinkBurned() {
+    return Boolean(this.brink?.burned);
   }
 
   /**
@@ -142,7 +161,8 @@ export class TenCandlesCharacterData extends foundry.abstract.TypeDataModel {
     return Boolean(
       this.viceConsumed &&
       this.virtueConsumed &&
-      this.momentAttempted
+      this.momentAttempted &&
+      !this.brinkBurned
     );
   }
 

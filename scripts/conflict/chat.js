@@ -16,7 +16,8 @@ import {
 } from "../state/game-state.js";
 
 import {
-  analyzeResolution
+  analyzeResolution,
+  getHopeResults
 } from "./dice.js";
 
 const RESOLUTION_TEMPLATE_PATH =
@@ -271,10 +272,8 @@ export async function renderResolutionCard(
     !resolved
   );
 
-  const hasHope = Boolean(
-    resolution.momentUsed &&
-    resolution.momentResult !== null
-  );
+  const hopeResults = getHopeResults(resolution);
+  const hasHope = hopeResults.length > 0;
 
   const hasGMPool =
     resolution.redPoolSize > 0;
@@ -338,7 +337,7 @@ export async function renderResolutionCard(
       ),
       hopeDice: hasHope
         ? prepareDice(
-            [resolution.momentResult],
+            hopeResults,
             "hope"
           )
         : [],
@@ -400,6 +399,7 @@ export async function renderResolutionCard(
       characterDeparture: Boolean(
         resolution.characterDeparture
       ),
+      brinkConsumed: Boolean(resolution.brinkConsumed),
       canSeizeNarration:
         canSeizeNarration(state, resolution),
       narrationSeizeLabel,
@@ -907,6 +907,13 @@ export function activateResolutionCardActions(
             requestAction
           } = await import("./socket.js");
 
+          if (action === "use-limit") {
+            const confirmed = await foundry.applications.api.DialogV2.confirm({
+              window: {title: game.i18n.localize("ETC.Hope.BrinkConfirmTitle")},
+              content: `<p>${game.i18n.localize("ETC.Hope.BrinkConfirmBody")}</p>`
+            });
+            if (!confirmed) return;
+          }
           await requestAction(action, {
             resolutionId,
             messageId: message.id

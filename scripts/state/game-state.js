@@ -208,6 +208,11 @@ function normalizeResolution(rawResolution) {
         )
       : null;
 
+  resolution.hopeResults = resolution.momentUsed
+    ? normalizeDiceResults(Array.isArray(resolution.hopeResults) && resolution.hopeResults.length
+      ? resolution.hopeResults : [resolution.momentResult]).slice(0, TOTAL_CANDLES)
+    : [];
+
   resolution.redPoolSize = clampInteger(
     resolution.redPoolSize,
     0,
@@ -276,6 +281,7 @@ function normalizeResolution(rawResolution) {
   resolution.characterDeparture = Boolean(
     resolution.characterDeparture
   );
+  resolution.brinkConsumed = Boolean(resolution.brinkConsumed);
 
   resolution.narrationSeized = Boolean(
     resolution.narrationSeized
@@ -568,23 +574,17 @@ export function canSeizeNarration(
   const redSixes = (resolution.redResults ?? [])
     .filter((result) => Number(result) === 6)
     .length;
-  const momentSuccess = Boolean(
-    resolution.momentUsed &&
-    [5, 6].includes(Number(resolution.momentResult))
-  );
-  const momentSixes = Boolean(
-    resolution.momentUsed &&
-    Number(resolution.momentResult) === 6
-  )
-    ? 1
-    : 0;
+  const hopeResults = (Array.isArray(resolution.hopeResults) && resolution.hopeResults.length
+    ? resolution.hopeResults : resolution.momentUsed ? [resolution.momentResult] : []).map(Number);
+  const momentSuccess = hopeResults.some(result => [5, 6].includes(result));
+  const momentSixes = hopeResults.filter(result => result === 6).length;
   const playerSixes = blueSixes + momentSixes;
   const playerSucceeded =
     blueSixes > 0 || momentSuccess;
 
   return Boolean(
     playerSucceeded &&
-    redSixes > playerSixes
+    redSixes >= playerSixes
   );
 }
 

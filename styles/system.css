@@ -3311,3 +3311,33 @@
 .etc-about-support p { margin: 0 0 .75rem; }
 .etc-about-coffee { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; padding: .4rem .7rem; border: 1px solid currentColor; border-radius: 5px; text-decoration: none; }
 .etc-about-disclaimer { opacity: .75; font-size: .76rem; margin: .85rem 0 0; }
+
+/* 1.1.0 DEV - Align the Hope transfer action with its recipient selector. */
+.etc-state-control-layout .etc-actor-management__grid button[data-state-action="hope-transfer"] {
+  align-self: end;
+  min-height: 32px;
+  margin: 0;
+}
+
+/* 1.1.0 DEV - Reserve enough width for the Hope label when dice accumulate. */
+.chat-message .ets-conflict-card .ets-conflict-hope {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem 0.65rem;
+}
+
+.chat-message .ets-conflict-card .ets-conflict-hope > strong {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+.chat-message .ets-conflict-card .ets-conflict-hope .ets-dice-row--hope {
+  flex: 0 1 auto;
+  min-width: 0;
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+}

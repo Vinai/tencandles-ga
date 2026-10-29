@@ -194,7 +194,8 @@ export async function rollD6Pool(
 
 /**
  * Le dé d'Espoir est lancé dans la même animation que le pool joueur, mais
- * reste isolé dans les données afin de ne jamais être affecté par la Limite.
+ * reste isolé dans les données : la Limite ne le relance que si le réglage
+ * « relance de la Limite : dés d'Espoir compris » est activé.
  */
 export async function rollPlayerD6Pool(
   numberOfDice,

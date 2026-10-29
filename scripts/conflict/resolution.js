@@ -4,9 +4,11 @@
  */
 
 import {
+  BRINK_REROLLS_HOPE_KEY,
   GAME_STAGES,
   GAMEPLAY_MODES,
   RESOLUTION_STATUSES,
+  SYSTEM_ID,
   TOTAL_CANDLES
 } from "../constants.js";
 
@@ -46,6 +48,7 @@ import { effectiveBlueResults, speedApplies } from "./speed.js";
 import {
   analyzeResolution,
   countValue,
+  getHopeResults,
   rollD6Pool,
   rollPlayerD6Pool
 } from "./dice.js";
@@ -688,6 +691,22 @@ export async function handleViceOrVirtue(
   }
 }
 
+/**
+ * Règle : « When a Brink is embraced the full pool of dice must be rerolled,
+ * even dice that had landed on 6. » Désactivé par défaut : les dés d'Espoir
+ * gardent alors leur résultat, comme avant ce réglage.
+ */
+export function registerBrinkRerollSetting() {
+  game.settings.register(SYSTEM_ID, BRINK_REROLLS_HOPE_KEY, {
+    name: "ETC.Settings.BrinkRerollsHope.Name",
+    hint: "ETC.Settings.BrinkRerollsHope.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
+}
+
 export async function handleLimit(
   requesterId,
   resolutionId
@@ -753,11 +772,23 @@ export async function handleLimit(
       return false;
     }
 
+    // Par défaut, les dés d'Espoir gardent leur résultat. Avec le réglage
+    // « relance de la Limite : dés d'Espoir compris », ils sont relancés
+    // avec le pool (« the full pool of dice must be rerolled »).
+    const rerollHope = Boolean(
+      game.settings.get(SYSTEM_ID, BRINK_REROLLS_HOPE_KEY)
+    );
+    const hopeCount = rerollHope
+      ? getHopeResults(resolution).length
+      : 0;
+
     const {
-      results
-    } = await rollD6Pool(
+      blueResults: results,
+      hopeResults
+    } = await rollPlayerD6Pool(
       resolution.bluePoolSize,
       {
+        hopeDice: hopeCount,
         speedBlue: speedApplies(resolution),
         userId: resolution.playerId,
         actorId: resolution.actorId
@@ -771,17 +802,34 @@ export async function handleLimit(
     resolution.blueResults = effectiveResults;
     resolution.rerolls.limit = true;
 
+    if (hopeResults.length > 0) {
+      resolution.hopeResults = clone(hopeResults);
+      resolution.momentResult = hopeResults[0];
+    }
+
+    const timestamp = Date.now();
     resolution.history = [
       ...(resolution.history ?? []),
       {
         type: "limit",
         results: clone(effectiveResults),
         rawResults: clone(results),
-        timestamp: Date.now()
-      }
+        timestamp
+      },
+      // Comme au premier jet : les dés d'Espoir relancés ont leur entrée.
+      ...(hopeResults.length > 0
+        ? [
+            {
+              type: "hope-roll",
+              result: hopeResults[0],
+              results: clone(hopeResults),
+              reroll: "limit",
+              timestamp
+            }
+          ]
+        : [])
     ];
 
-    // Le dé d'Espoir est volontairement conservé.
     await saveAndRefreshResolution(
       state,
       resolution

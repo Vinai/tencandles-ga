@@ -19,6 +19,9 @@ export const GAMEPLAY_MODES = Object.freeze({
 
 export const DEFAULT_SPEED_LAST_CANDLE = 6;
 
+// Réglage du monde : la relance de la Limite relance aussi les dés d'Espoir.
+export const BRINK_REROLLS_HOPE_KEY = "brinkRerollsHopeDice";
+
 export const PRESENTATION_MODES = Object.freeze({
   OFFICIAL: "official",
   PERSONAL: "personal"

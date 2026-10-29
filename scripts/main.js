@@ -41,7 +41,8 @@ import {
 } from "./instant/manager.js";
 
 import {
-  cancelActiveResolution
+  cancelActiveResolution,
+  registerBrinkRerollSetting
 } from "./conflict/resolution.js";
 
 import {
@@ -172,6 +173,7 @@ Hooks.once("init", () => {
 
   registerCollectiveStateSetting();
   registerDepartureMessageHistorySetting();
+  registerBrinkRerollSetting();
 
   game.settings.registerMenu(
     SYSTEM_ID,

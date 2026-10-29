@@ -3,6 +3,7 @@
  */
 
 import {
+  BRINK_REROLLS_HOPE_KEY,
   GAME_STAGES,
   PRESENTATION_MODES,
   RESOLUTION_STATUSES,
@@ -359,6 +360,12 @@ export async function renderResolutionCard(
       showLimitButton,
       viceVirtueDisabled,
       limitDisabled,
+      // L'aide du bouton suit le réglage des dés d'Espoir à la relance.
+      limitHelp: game.i18n.localize(
+        game.settings.get(SYSTEM_ID, BRINK_REROLLS_HOPE_KEY)
+          ? "ETC.Chat.LimitHelpWithHope"
+          : "ETC.Chat.LimitHelp"
+      ),
       hasPlayerActions,
       hasGMActions,
 

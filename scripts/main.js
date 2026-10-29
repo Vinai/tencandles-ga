@@ -45,6 +45,10 @@ import {
 } from "./conflict/resolution.js";
 
 import {
+  transferHopeDieGM
+} from "./management/actor-resources.js";
+
+import {
   createNewGame
 } from "./management/game-manager.js";
 
@@ -321,6 +325,16 @@ Hooks.once("ready", async () => {
       requestAction("start-next-scene", payload),
     seizeNarration: (resolutionId) =>
       requestAction("seize-narration", { resolutionId }),
+    /**
+     * Martyre : transfert d'un dé d'Espoir, réservé au MJ actif, comme dans
+     * la régie (mêmes vérifications, sans confirmation).
+     * @param {string} fromActorId identifiant d'un acteur du monde (pas d'UUID)
+     * @param {string} toActorId identifiant d'un acteur du monde (pas d'UUID)
+     * @returns {Promise<{giver: Actor, receiver: Actor}>} rejetée avec une
+     *   Error au message localisé si le transfert est refusé
+     */
+    transferHopeDie: (fromActorId, toActorId) =>
+      transferHopeDieGM(fromActorId, toActorId),
     createNewGame,
 
     canvas: {

@@ -317,6 +317,8 @@
   "ETC.Instant.Cancelled": "This Moment resolution was cancelled.",
   "ETC.Instant.AlreadyResolved": "This Moment was already resolved. Reset it from the sheet before making a new request.",
   "ETC.Instant.AlreadyPending": "A Moment request is already pending for this character.",
+  "ETC.Instant.CannotCancelDeclared": "This Moment's roll has already been declared; the Moment is burned and cannot be taken back.",
+  "ETC.Notifications.MomentRollInvalid": "The roll cannot be declared for this Moment: the request is missing, belongs to another character, or the Moment is already settled.",
   "ETC.Instant.QueuedNotification": "The Moment request will be posted after the active conflict.",
   "ETC.Instant.PublishedNotification": "The Moment request was posted to chat.",
   "ETC.Instant.PublishFailed": "The request was saved, but its chat card could not be posted. It will be offered again after the next conflict.",

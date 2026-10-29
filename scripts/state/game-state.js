@@ -99,6 +99,11 @@ function normalizeInstantRequest(rawRequest) {
     request.activeMessageId
   );
 
+  // Résolution du jet déclaré pour ce Moment, jusqu'à son règlement.
+  request.momentRollResolutionId = normalizeNullableString(
+    request.momentRollResolutionId
+  );
+
   if (
     request.activeMessageId &&
     !request.messageIds.includes(request.activeMessageId)
@@ -259,6 +264,10 @@ function normalizeResolution(rawResolution) {
 
   resolution.limitAvailableAtStart = Boolean(
     resolution.limitAvailableAtStart
+  );
+
+  resolution.momentRequestId = normalizeNullableString(
+    resolution.momentRequestId
   );
 
   resolution.finalSuccess =

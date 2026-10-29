@@ -438,6 +438,16 @@ export async function handleCancelInstantRequest(
       return false;
     }
 
+    // Le jet du Moment est déclaré : le Moment est brûlé, il ne se reprend pas.
+    if (request.momentRollResolutionId) {
+      notifyRequester(
+        requesterId,
+        "warn",
+        game.i18n.localize("ETC.Instant.CannotCancelDeclared")
+      );
+      return false;
+    }
+
     await saveCollectiveState({
       ...state,
       instantRequests: state.instantRequests.filter(

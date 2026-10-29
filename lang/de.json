@@ -317,6 +317,8 @@
   "ETC.Instant.Cancelled": "Die Auflösung dieses Moments wurde abgebrochen.",
   "ETC.Instant.AlreadyResolved": "Dieser Moment ist bereits geklärt. Setze ihn im Bogen zurück, bevor du eine neue Anfrage erstellst.",
   "ETC.Instant.AlreadyPending": "Für diesen Charakter ist bereits eine Momentanfrage offen.",
+  "ETC.Instant.CannotCancelDeclared": "Der Wurf für diesen Moment ist schon angesagt: Der Moment ist verbrannt und kann nicht zurückgenommen werden.",
+  "ETC.Notifications.MomentRollInvalid": "Der Wurf kann nicht für diesen Moment angesagt werden: Die Anfrage fehlt, gehört zu einem anderen Charakter, oder der Moment ist schon entschieden.",
   "ETC.Instant.QueuedNotification": "Die Momentanfrage wird nach dem Konflikt veröffentlicht.",
   "ETC.Instant.PublishedNotification": "Die Momentanfrage wurde im Chat veröffentlicht.",
   "ETC.Instant.PublishFailed": "Die Anfrage wurde gespeichert, aber die Chatkarte fehlt. Sie wird nach dem nächsten Konflikt erneut angeboten.",

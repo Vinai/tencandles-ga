@@ -40,8 +40,15 @@ import {
   handleResolveInstant
 } from "../instant/manager.js";
 
+/**
+ * @param {string|null} actorUuid
+ * @param {object} [options]
+ * @param {string|null} [options.momentRequestId] le jet est celui du Moment
+ *   de cette demande : le Moment est brûlé avant le jet.
+ */
 export async function requestPlayerRoll(
-  actorUuid = null
+  actorUuid = null,
+  { momentRequestId = null } = {}
 ) {
   let selectedActorUuid = actorUuid;
 
@@ -55,7 +62,8 @@ export async function requestPlayerRoll(
   }
 
   return requestAction("player-roll", {
-    actorUuid: selectedActorUuid
+    actorUuid: selectedActorUuid,
+    ...(momentRequestId ? { momentRequestId } : {})
   });
 }
 
@@ -76,7 +84,11 @@ async function handleGMRequest(data) {
     case "player-roll":
       return handlePlayerRoll(
         requesterId,
-        data.payload?.actorUuid
+        data.payload?.actorUuid,
+        {
+          momentRequestId:
+            data.payload?.momentRequestId ?? null
+        }
       );
 
     case "gm-roll":

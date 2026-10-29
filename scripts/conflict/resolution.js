@@ -174,7 +174,8 @@ async function saveAndRefreshResolution(
 
 export async function handlePlayerRoll(
   requesterId,
-  actorUuid
+  actorUuid,
+  { momentRequestId = null } = {}
 ) {
   const requester = game.users.get(requesterId);
 
@@ -273,6 +274,53 @@ export async function handlePlayerRoll(
     const resources = getActorResourceState(actor);
     const bluePoolSize = state.bluePoolRemaining;
 
+    // Jet déclaré pour le Moment d'une demande en cours : « Once this has
+    // been declared, but before rolling dice, burn your Moment. This could
+    // open up a Trait or Brink for use in the conflict. » La demande garde
+    // la résolution de ce jet (`momentRollResolutionId`) : jusqu'au règlement
+    // du Moment, il compte comme brûlé pour tout conflit de ce personnage, et
+    // la même demande ne déclare pas un second jet.
+    const requests = state.instantRequests ?? [];
+    const declaredRequest = requests.find((request) =>
+      request.actorId === actor.id &&
+      request.momentRollResolutionId
+    );
+    const momentRequest = momentRequestId && !declaredRequest
+      ? requests.find((request) =>
+          request.id === momentRequestId &&
+          request.actorId === actor.id
+        )
+      : null;
+    const momentRoll = Boolean(momentRequest) &&
+      !actor.system.momentAttempted;
+
+    // Une déclaration qui ne vaut pas (demande inconnue, d'un autre
+    // personnage, ou Moment déjà réglé) est refusée avant les dés, plutôt que
+    // de devenir un jet ordinaire. La même demande déjà déclarée ne change
+    // rien.
+    if (
+      momentRequestId &&
+      !momentRoll &&
+      declaredRequest?.id !== momentRequestId
+    ) {
+      notifyRequester(
+        requesterId,
+        "warn",
+        game.i18n.localize(
+          "ETC.Notifications.MomentRollInvalid"
+        )
+      );
+      return false;
+    }
+    const momentBurned = !actor.system.momentAttempted &&
+      (momentRoll || Boolean(declaredRequest));
+    const limitAvailable = Boolean(resources.canUseLimit) || (
+      momentBurned &&
+      actor.system.viceConsumed &&
+      actor.system.virtueConsumed &&
+      !actor.system.brinkBurned
+    );
+
     const gameplayMode = state.gameplayMode === GAMEPLAY_MODES.SPEED
       ? GAMEPLAY_MODES.SPEED : GAMEPLAY_MODES.CLASSIC;
     const speedLastCandle = state.speedLastCandle;
@@ -341,9 +389,9 @@ export async function handlePlayerRoll(
       resources,
 
       // Une Limite déverrouillée pendant ce conflit ne devient utilisable
-      // qu'au conflit suivant.
-      limitAvailableAtStart:
-        Boolean(resources.canUseLimit),
+      // qu'au conflit suivant ; sauf par le Moment brûlé avant le jet.
+      limitAvailableAtStart: limitAvailable,
+      momentRequestId: momentRoll ? momentRequest.id : null,
 
       finalSuccess: null,
       narrator: null,
@@ -381,6 +429,15 @@ export async function handlePlayerRoll(
       state: stateWithSuspendedInstants,
       suspendedRequests
     } = suspendInstantRequestsInState(state);
+
+    if (momentRoll) {
+      stateWithSuspendedInstants.instantRequests =
+        stateWithSuspendedInstants.instantRequests.map((request) =>
+          request.id === momentRequest.id
+            ? { ...request, momentRollResolutionId: resolution.id }
+            : request
+        );
+    }
 
     // Sauvegarde mécanique avant la projection dans le chat.
     await saveCollectiveState({
@@ -1341,8 +1398,17 @@ export async function cancelActiveResolution({
       }
     ];
 
+    // Un jet de Moment annulé : le Moment n'a pas été vécu, sa déclaration
+    // est oubliée.
+    const instantRequests = (state.instantRequests ?? []).map((request) =>
+      request.momentRollResolutionId === resolution.id
+        ? { ...request, momentRollResolutionId: null }
+        : request
+    );
+
     await saveCollectiveState({
       ...state,
+      instantRequests,
       activeResolution: null,
       lastResolution: resolution
     });

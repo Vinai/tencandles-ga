@@ -317,6 +317,8 @@
   "ETC.Instant.Cancelled": "La resolución de este Momento se ha cancelado.",
   "ETC.Instant.AlreadyResolved": "Este Momento ya se resolvió. Restablécelo desde la ficha antes de crear otra solicitud.",
   "ETC.Instant.AlreadyPending": "Ya hay una solicitud de Momento pendiente para este personaje.",
+  "ETC.Instant.CannotCancelDeclared": "La tirada de este Momento ya está declarada: el Momento está quemado y no puede retirarse.",
+  "ETC.Notifications.MomentRollInvalid": "La tirada no puede declararse para este Momento: la solicitud no existe, pertenece a otro personaje o el Momento ya está resuelto.",
   "ETC.Instant.QueuedNotification": "La solicitud de Momento se publicará tras el conflicto actual.",
   "ETC.Instant.PublishedNotification": "La solicitud de Momento se ha publicado en el chat.",
   "ETC.Instant.PublishFailed": "La solicitud se guardó, pero no pudo publicarse su tarjeta. Se propondrá de nuevo tras el próximo conflicto.",

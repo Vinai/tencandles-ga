@@ -317,6 +317,8 @@
   "ETC.Instant.Cancelled": "Risoluzione del Momento annullata.",
   "ETC.Instant.AlreadyResolved": "Questo Momento è già stato risolto. Reimpostalo dalla scheda prima di creare una nuova richiesta.",
   "ETC.Instant.AlreadyPending": "Una richiesta di Momento è già in attesa per questo personaggio.",
+  "ETC.Instant.CannotCancelDeclared": "Il tiro di questo Momento è già dichiarato: il Momento è bruciato e non può essere ritirato.",
+  "ETC.Notifications.MomentRollInvalid": "Il tiro non può essere dichiarato per questo Momento: la richiesta manca, appartiene a un altro personaggio o il Momento è già risolto.",
   "ETC.Instant.QueuedNotification": "La richiesta di Momento verrà pubblicata dopo il conflitto.",
   "ETC.Instant.PublishedNotification": "Richiesta di Momento pubblicata nella chat.",
   "ETC.Instant.PublishFailed": "La richiesta è stata salvata, ma la carta chat non è stata pubblicata. Verrà riproposta dopo il prossimo conflitto.",

@@ -317,6 +317,8 @@
   "ETC.Instant.Cancelled": "La résolution de cet Instant a été annulée.",
   "ETC.Instant.AlreadyResolved": "Cet Instant a déjà été résolu. Réinitialisez-le depuis la fiche avant d’en créer une nouvelle demande.",
   "ETC.Instant.AlreadyPending": "Une demande d’Instant est déjà en attente pour ce personnage.",
+  "ETC.Instant.CannotCancelDeclared": "Le jet de cet Instant est déjà déclaré : l’Instant est brûlé et ne peut pas être repris.",
+  "ETC.Notifications.MomentRollInvalid": "Le jet ne peut pas être déclaré pour cet Instant : la demande est introuvable, appartient à un autre personnage, ou l’Instant est déjà réglé.",
   "ETC.Instant.QueuedNotification": "La demande d’Instant sera publiée après le conflit en cours.",
   "ETC.Instant.PublishedNotification": "La demande d’Instant a été publiée dans le chat.",
   "ETC.Instant.PublishFailed": "La demande est enregistrée, mais sa carte de chat n’a pas pu être publiée. Elle sera reproposée après le prochain conflit.",
